@@ -1,0 +1,99 @@
+%%% Template from: https://www.sharelatex.com/templates/thesis/thesis-template-with-memoir
+
+\documentclass[11pt,a4paper]{memoir}
+\usepackage[utf8]{inputenc}
+\usepackage[dvips]{graphicx}
+\usepackage{xcolor}
+
+\usepackage[
+breaklinks=true,colorlinks=true,
+%linkcolor=blue,urlcolor=blue,citecolor=blue,% PDF VIEW
+linkcolor=black,urlcolor=black,citecolor=black,% PRINT
+bookmarks=true,bookmarksopenlevel=2]{hyperref}
+
+\usepackage{geometry}
+% PDF VIEW
+% \geometry{total={210mm,297mm},
+% left=25mm,right=25mm,%
+% bindingoffset=0mm, top=25mm,bottom=25mm}
+% PRINT
+\geometry{total={210mm,297mm},
+left=20mm,right=20mm,
+bindingoffset=10mm, top=25mm,bottom=25mm}
+
+\OnehalfSpacing
+%\linespread{1.3}
+
+%%% CHAPTER'S STYLE
+\chapterstyle{bianchi}
+%\chapterstyle{ger}
+%\chapterstyle{madsen}
+%\chapterstyle{ell}
+%%% STYLE OF SECTIONS, SUBSECTIONS, AND SUBSUBSECTIONS
+\setsecheadstyle{\Large\bfseries\sffamily\raggedright}
+\setsubsecheadstyle{\large\bfseries\sffamily\raggedright}
+\setsubsubsecheadstyle{\bfseries\sffamily\raggedright}
+
+
+%%% STYLE OF PAGES NUMBERING
+%\pagestyle{companion}\nouppercaseheads 
+%\pagestyle{headings}
+%\pagestyle{Ruled}
+\pagestyle{plain}
+\makepagestyle{plain}
+\makeevenfoot{plain}{\thepage}{}{}
+\makeoddfoot{plain}{}{}{\thepage}
+\makeevenhead{plain}{}{}{}
+
+\author{Joseph Redfern}
+\title{Video to audio conversion for visually impaired}
+\date{}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+{%%%
+\sffamily
+\centering
+\Large
+
+~\vspace{\fill}
+
+{\huge 
+    Video to Audio converstion for the Visually Impared
+}
+
+\vspace{2.5cm}
+
+{\LARGE
+    Joseph Redfern
+}
+
+\vspace{3.5cm}
+
+School of Computer Science \& Informatics\\
+Cardiff University
+
+\vspace{3.5cm}
+
+Supervisor: Dr Kirill Sidorov 
+
+\vspace{\fill}
+
+May 2015
+
+}
+
+\cleardoublepage
+
+\input{Support/abstract.tex}
+\clearpage
+
+\tableofcontents*
+
+\clearpage
+
+\input{Introduction/intro.tex}
+
+\end{document}
