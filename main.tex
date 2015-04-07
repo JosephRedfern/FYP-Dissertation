@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[dvips]{graphicx}
 \usepackage{xcolor}
+\usepackage[backend=bibtex]{biblatex}
 
 \usepackage[
 breaklinks=true,colorlinks=true,
@@ -44,6 +45,8 @@ bindingoffset=10mm, top=25mm,bottom=25mm}
 \makeevenfoot{plain}{\thepage}{}{}
 \makeoddfoot{plain}{}{}{\thepage}
 \makeevenhead{plain}{}{}{}
+
+\bibliography{references}
 
 \author{Joseph Redfern}
 \title{Video to audio conversion for visually impaired}
@@ -88,12 +91,21 @@ May 2015
 \cleardoublepage
 
 \input{Support/abstract.tex}
+
 \clearpage
 
 \tableofcontents*
 
 \clearpage
 
-\input{Introduction/intro.tex}
+\chapter{Introduction}
+\input{MainBody/intro.tex}
+
+\chapter{Approach}
+\input{MainBody/approach.tex}
+
+\clearpage
+\printbibliography
+
 
 \end{document}

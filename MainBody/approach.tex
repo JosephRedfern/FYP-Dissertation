@@ -1,0 +1,10 @@
+\section{Image Segmentation}
+Although the primary deliverable of the project was not to invent a new image segmentation algorithm, the method of image segmentation was an important choice.
+
+It was decided that a depth-sensing camera~\cite{xtion} would be used in order to assist with region extraction. Rather than relying solely on RGB data and difference in colour to extract objects from the video footage, depth data would also be considered. This choice was made, as object-segmentation was desired - if a white cup was placed on a white table, traditional colour-based segmentation algorithms may struggle to differentiate between the object and the surfact on which the object was sitting.
+
+As majority of image segmentation algorithm implmentations consider only colour information for segmentation; it was not possible to use an off-the-shelf MATLAB module to complete this task. After reviewing publications on segmentation using both depth and RGB data, a few different approaches were trialled.
+
+\subsection{K-Means with 4 channels}
+
+One approach was to use a standard K-Means image segmentation algorithm~\cite{kmeans-matlab}, with an additional channel added, representing depth. 
