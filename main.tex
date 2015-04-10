@@ -1,10 +1,14 @@
 %%% Template from: https://www.sharelatex.com/templates/thesis/thesis-template-with-memoir
 
 \documentclass[11pt,a4paper]{memoir}
-\usepackage[utf8]{inputenc}
 \usepackage[dvips]{graphicx}
 \usepackage{xcolor}
+\usepackage{float}
 \usepackage[backend=bibtex]{biblatex}
+\usepackage{subfigure}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{wasysym}
 
 \usepackage[
 breaklinks=true,colorlinks=true,
@@ -13,6 +17,9 @@ linkcolor=black,urlcolor=black,citecolor=black,% PRINT
 bookmarks=true,bookmarksopenlevel=2]{hyperref}
 
 \usepackage{geometry}
+\graphicspath{ {Figures/} }
+
+
 % PDF VIEW
 % \geometry{total={210mm,297mm},
 % left=25mm,right=25mm,%
