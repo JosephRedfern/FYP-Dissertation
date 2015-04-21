@@ -27,34 +27,32 @@ The main issue with this approach was that Depth Information was not used - case
 
 \subsection{K-Means with 4 channels}
 One approach was to use a standard K-Means image segmentation algorithm~\cite{kmeans-matlab}, with an additional channel added, representing depth. 
-\begin{figure}
+
+\begin{figure}[H]
     \centering
-
-    \begin{subfigure}[b]{0.5\textwidth}
+    \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=textwidth]{Segmentation/squarergb-10.png}
-        \caption{Input RGB image}
+        \includegraphics[width=\textwidth]{Segmentation/squarergb-10.png}
+        \caption{Input RGB Image}
     \end{subfigure}
-
     \hfill
-
-    \begin{subfigure}[b]{0.5\textwidth}
+    \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=textwidth]{Segmentation/squaredepth-10.png}
+        \includegraphics[width=\textwidth]{Segmentation/squaredepth-10.png}
         \caption{Input Depth Map}
     \end{subfigure}
 \end{figure}
 
 \begin{figure}[H]
-\centering
-\includegraphics[width=0.4\textwidth]{Segmentation/kmeans-rgb-10seg-im9.png}
-\caption{RGB-only K-Means segmentation}
+    \centering
+    \includegraphics[width=0.4\textwidth]{Segmentation/kmeans-rgb-10seg-im9.png}
+    \caption{RGB-only K-Means segmentation}
 \end{figure}
 
 \begin{figure}[H]
-\centering
-\includegraphics[width=0.4\textwidth]{Segmentation/kmeans-rgb-depth-10seg-im9.png}
-\caption{RGBD K-means segmentation}
+    \centering
+    \includegraphics[width=0.4\textwidth]{Segmentation/kmeans-rgb-depth-10seg-im9.png}
+    \caption{RGBD K-means segmentation}
 \end{figure}
 
 This was fairly succesful, however was very vulnerable to noise - only images acquired in environments with perfect lighting provided good segmentation results. 
@@ -62,9 +60,9 @@ This was fairly succesful, however was very vulnerable to noise - only images ac
 These results were fairly good - the addition of the depth channel resulted in a smoother segmentation. However, using raw images from the camera for segmentation resulted in a fairly noisy image. Applying a gaussian blur to the image (\diameter = 5, \sigma = 2) removed some of the noise, at the expense of sharpness in the image.
 
 \begin{figure}[H]
-\centering
-\includegraphics[width=0.4\textwidth]{Segmentation/rgb-depth-kmeans-blurred-10.png}
-\caption{Segmentation of blurred RGBD image}
+    \centering
+    \includegraphics[width=0.4\textwidth]{Segmentation/rgb-depth-kmeans-blurred-10.png}
+    \caption{Segmentation of blurred RGBD image}
 \end{figure}
 
 \subsection{K-Nearest Neighbour}

@@ -5,10 +5,10 @@
 \usepackage{xcolor}
 \usepackage{float}
 \usepackage[backend=bibtex]{biblatex}
-\usepackage{subfigure}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{wasysym}
+\usepackage[printonlyused]{acronym}
 
 \usepackage[
 breaklinks=true,colorlinks=true,
@@ -108,8 +108,14 @@ May 2015
 \chapter{Introduction}
 \input{MainBody/intro.tex}
 
+\chapter{Background}
+\input{MainBody/background.tex}
+
 \chapter{Approach}
 \input{MainBody/approach.tex}
+\clearpage
+\input{acronyms.tex}
+
 
 \clearpage
 \printbibliography
