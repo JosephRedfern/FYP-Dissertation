@@ -23,7 +23,7 @@ This method was quite succesful - the resulting image only contained objects tha
 
 \end{figure}
 
-The main issue with this approach was that Depth Information was not used - cases where objects had little RGB contrast would not be picked out. 
+The main issue with this approach was that Depth Information was not used --- cases where objects had little RGB contrast would not be picked out. 
 
 \subsection{K-Means with 4 channels}
 One approach was to use a standard K-Means image segmentation algorithm~\cite{kmeans-matlab}, with an additional channel added, representing depth. 
@@ -55,9 +55,9 @@ One approach was to use a standard K-Means image segmentation algorithm~\cite{km
     \caption{RGBD K-means segmentation}
 \end{figure}
 
-This was fairly succesful, however was very vulnerable to noise - only images acquired in environments with perfect lighting provided good segmentation results. 
+This was fairly succesful, however was very vulnerable to noise --- only images acquired in environments with perfect lighting provided good segmentation results. 
 
-These results were fairly good - the addition of the depth channel resulted in a smoother segmentation. However, using raw images from the camera for segmentation resulted in a fairly noisy image. Applying a gaussian blur to the image (\diameter = 5, \sigma = 2) removed some of the noise, at the expense of sharpness in the image.
+These results were fairly good - the addition of the depth channel resulted in a smoother segmentation. However, using raw images from the camera for segmentation resulted in a fairly noisy image. Applying a gaussian blur to the image ($\diameter = 5$, $\sigma = 2$) removed some of the noise, at the expense of sharpness in the image.
 
 \begin{figure}[H]
     \centering
