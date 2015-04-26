@@ -9,7 +9,9 @@
 \usepackage{subcaption}
 \usepackage{wasysym}
 \usepackage{listings}
+\usepackage[numbered,framed]{matlab-prettifier}
 \usepackage[printonlyused]{acronym}
+\usepackage{gensymb}
 
 \usepackage[
 breaklinks=true,colorlinks=true,
@@ -60,6 +62,16 @@ bindingoffset=10mm, top=25mm,bottom=25mm}
 \title{Video to audio conversion for visually impaired}
 \date{}
 
+\let\ph\mlplaceholder % shorter macro
+\lstMakeShortInline"
+
+\lstset{
+  style              = Matlab-editor,
+  basicstyle         = \mlttfamily,
+  escapechar         = ",
+  mlshowsectionrules = true,
+}
+
 \begin{document}
 
 \thispagestyle{empty}
@@ -106,14 +118,20 @@ May 2015
 
 \clearpage
 
+\lstlistoflistings
+
+\clearpage
+
 \chapter{Introduction}
 \input{MainBody/intro.tex}
 
 \chapter{Background}
 \input{MainBody/background.tex}
 
-\chapter{Approach}
-\input{MainBody/approach.tex}
+\chapter{Specification}
+\input{MainBody/specification.tex}
+\chapter{Implementation}
+\input{MainBody/implementation.tex}
 \clearpage
 \input{acronyms.tex}
 
@@ -123,3 +141,4 @@ May 2015
 
 
 \end{document}
+

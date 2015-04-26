@@ -1,7 +1,21 @@
+\section{Problem Context}
+\subsection{UK Statistics}
+In the UK alone, around 2,000,000 people live with sight loss --- around 360,000 of which are registered with their local authority as being blind or visually impaired, who have severe and irreversible sight loss~/cite{uk-blind}.  Of these 360,000 people, there are only 17,000 white cane-users, and less than 4,800~\cite{guidedog-count} guide-dog owners. Assuming no overlap between guide dog users and white cane users, this leaves almost 94\% without access to the two major forms of assistance available to the blind.
+
+A possible factor that could explain the relatively small adoption of Guide Dogs is their cost --- as mentioned in the introductory section, the life-time cost of a guide dog is around £50,000. Although the dog is paid for in it's entirety by the Guide Dogs for the Blind association, they themselves are a charity and do not receive government funding. A system whereby the visually impaired could purchase a guide-dog would likely not be effective, as 66\% of the registered blind/partially sighted are not in paid employment~\cite{afbff} so would be unlikely to be able to afford the cost.
+
+\subsection{Developing Countries}
+The situation in less developed countries than the UK is far worse. According to the Himalayan Cataract Project~\cite{worldblindness}, ``blindness is most prevalent in developing countries where malnutrition, inadequate health and education services, poor water quality and a lack of sanitation leads to a high incidence of eye disease''. If these countries are so impoverished that they are unable to afford services that are considered basic human rights in the developed world, it is unlikely that they will be able to afford to spend £50,000 per person on guide dogs. 
+
+Although white canes are a cheaper, they are not without their downsides. They have limited range - typically a few feet in-front of the user. This makes finding doorways etc a more difficult task than when using a guide-dog. 
+
 \section{The Problem}
+This project aims to address the lack of a cheap, intuitive way of enhancing the mobility of the visually impaired.
+
 It is non-trivial to convey visual information in the form of audio, for a number of reasons.
 
 \subsection{Compression}
+\label{sec:compression}
 Measuring the bit-rate of sensory systems is not an easy task --- however, research has been done into the informational capacity of both the human visual system, and human auditory system.
 
 Evidence makes it clear that the human visual system has a higher bit-rate than the human auditory system. Estimates by H. Jacobson~\cite{jacobson1950informational} suggest the informational capacity for the human ear to be roughly $8\times10^3$ bits/sec. In a separate paper~\cite{jacobson1951informational} Jacobson also estimates the informational capacity of the human eye to be around $4.3\times10^6$ bits/sec --- roughly $\times500$ higher. 
@@ -87,8 +101,12 @@ Wrappers for OpenNI are available for Matlab, making interaction with the XTION 
 
 Another major factor in choosing Matlab over another language is the amount of support available, both physically from my Project Supervisor, and online from the Matlab community. 
 
+The project has been developed using Matlab r2014a, although should be backwards-compatible with most recent releases. 
+
 \subsubsection{Java}
 As large parts of Matlab run in the \ac{JVM}, it is possible to use Java classes directly from within Matlab. This was taken advantage of in order to use threads, which is something that Matlab does not support out of the box. 
+
+Matlab r2014a runs under the Java JVM version 1.7 - as such, any development must be done using the Java 7 JDK or below. 
 
 \subsubsection{C/C++}
 C/C++ functions can be exported to the Matlab environment through the use of MEX-files. The OpenNI wrapper used to interact with the XTION camera was written using C++ and MEX, and required some modifications.
