@@ -5,17 +5,17 @@ Each mode has differing functionality, but shares some common components --- the
 
 \section{Technical Background}
 \subsection{Data Acquisition}
-The Asus XTION Pro Live~\cite{xtion} camera used in this project is compatible with OpenNI, a framework used for developing ``Natural Interaction'' software.
+The Asus Xtion Pro Live~\cite{xtion} camera used in this project is compatible with OpenNI, a framework used for developing ``Natural Interaction'' software.
 
 A module available on the Matlab File Exchange~\cite{matlabwrapper} providers a wrapper for OpenNI, allowing the image and depth information to be retrieved from the camera.
 
-Once compiled, the wrapper provides the following functions: \lstinline|mxNiCreateContext|, \lstinline|mxNiDeleteContext|, \lstinline|mxNiPhoto| and \lstinline|mxNiDepth|.
+Once compiled, the wrapper provides the following functions: \texttt{mxNiCreateContext}, \texttt{mxNiDeleteContext}, \texttt{mxNiPhoto} and \texttt{mxNiDepth}.
 
 \begin{itemize}
-    \item \lstinline|mxNiCreateContext()| initialises the camera and returns a handle to the XTION device.
-    \item \lstinline|mxNiPhoto(handles)| returns the current \ac{RGB} from the device referenced at \lstinline|handles|.
-    \item \lstinline|mxNiPhoto(handles)| returns the current \ac{RGB} from the device referenced at \lstinline|handles|.
-    \item \lstinline|mxNiDeleteContext(handles)| closes the connection to the camera 
+    \item \texttt{mxNiCreateContext()} initialises the camera and returns a handle to the Xtion device.
+    \item \texttt{mxNiPhoto(handles)} returns the current \ac{RGB} from the device referenced at \texttt{handles}.
+    \item \texttt{mxNiPhoto(handles)} returns the current \ac{RGB} from the device referenced at \texttt{handles}.
+    \item \texttt{mxNiDeleteContext(handles)} closes the connection to the camera 
 \end{itemize}
 
 Combining these methods, a basic Matlab program to acquire and display the RGB and Depth data from the camera as follows: 
@@ -35,12 +35,12 @@ Combining these methods, a basic Matlab program to acquire and display the RGB a
     colormap(jet);
 \end{lstlisting}
 
-The calls to \lstinline|permute()| are necessary as the OpenNI wrapper returns the data in the opposite order to what Matlab expects.
+The calls to \texttt{permute()} are necessary as the OpenNI wrapper returns the data in the opposite order to what Matlab expects.
 
-By default, both \lstinline|mxNiPhoto()| and \lstinline|mxNiDepth()| return $320\times240$ images.
+By default, both \texttt{mxNiPhoto()} and \texttt{mxNiDepth()} return $320\times240$ images.
 
-The data returned by \lstinline|mxNiPhoto()| is a 3-channel image containing 8-bit integer intensity values for the Red, Green and Blue channels.
-The data returned by \lstinline|mxNiDepth()| is takes the form of a matrix of distance values, measured in millimeters.
+The data returned by \texttt{mxNiPhoto()} is a 3-channel image containing 8-bit integer intensity values for the Red, Green and Blue channels.
+The data returned by \texttt{mxNiDepth()} is takes the form of a matrix of distance values, measured in millimeters.
 
 \section{Navigation Mode}
 As mentioned, the main focus of the Navigational of the system is to allow a user to walk around a room and avoid obstacles. Several prototype systems have been developed, each using different techniques to convey different data to the user.
@@ -50,7 +50,7 @@ As mentioned, the main focus of the Navigational of the system is to allow a use
 \subsubsection{Description}
 It is possible to read the distance to the center of the image with the following code:
 
-\begin{lstlisting}[caption = {Reading depth of image center}] 
+\begin{minted}{matlab}
     handles = mxNiCreateContext();
     rgb = mxNiPhoto(handles);
     rgb = permute(rgb, [3 2 1]);
@@ -58,10 +58,10 @@ It is possible to read the distance to the center of the image with the followin
     depth = permute(depth, [2 1]);
     
     centralDistance = depth(size(depth, 1), size(depth, 2));
-\end{lstlisting}
+\end{minted}
 
 
-Building on this basic idea, a way of conveying this distance was developed. By synthesising a sine-wave with a varying frequency (from low to high) according to distance to the central point, and playing it back in real-time, a user could get a live idea of the distance to the object directly in front of them. As the minimum depth supported by the XTION is around 550mm, and the maximum is around 4m (4000mm), a direct mapping from distance (in millimeters) to frequency (in Hertz) was used - these frequencies are well within the audible range of the human ear~\cite{hearingrange}.
+Building on this basic idea, a way of conveying this distance was developed. By synthesising a sine-wave with a varying frequency (from low to high) according to distance to the central point, and playing it back in real-time, a user could get a live idea of the distance to the object directly in front of them. As the minimum depth supported by the Xtion is around 550mm, and the maximum is around 4m (4000mm), a direct mapping from distance (in millimeters) to frequency (in Hertz) was used - these frequencies are well within the audible range of the human ear~\cite{hearingrange}.
 
 \begin{figure}[H]
 \centering
@@ -72,7 +72,7 @@ Building on this basic idea, a way of conveying this distance was developed. By 
 This required the development of the tone-generation Java class detailed in \ref{sec:tonegen}, and the source-code for this prototype can be found in the file centralTone.m.
 
 \subsubsection{System Performance}
-As the algorithm is quite straight-forward, the software implementing it was not excessively CPU intensive. Measuring the performance of the script gave estimates that it performed at roughly 30FPS - this limitation was probably due to the overhead of displaying the image of the depth map using \lstinline|imshow()|, which was only being done for development purposes.
+As the algorithm is quite straight-forward, the software implementing it was not excessively CPU intensive. Measuring the performance of the script gave estimates that it performed at roughly 30FPS - this limitation was probably due to the overhead of displaying the image of the depth map using \texttt{imshow()}, which was only being done for development purposes.
 
 \subsubsection{Effectiveness}
 The system was tested by walking around a room blindfolded, using only the camera to avoid obstacles. The test was a success --- the mapping from frequency to distance was quite intuitive, and there were no ``crashes'', in terms of both software and the physical sense.
@@ -80,7 +80,7 @@ The system was tested by walking around a room blindfolded, using only the camer
 However, I felt that the amount of information being sent to the user of the system could be improved. Given the range of possible frequencies (550-4000), the pitch resolution of the human auditory system (said to be around 1Hz~\cite{pitchres}), and the processing rate of the video feed, it is possible to get an approximation of the bitrate of the system:
 
 \begin{equation}
-\log _2\left({depth}_{max} - {depth}_{min}\right) \times 30 \approx 350 {bits/sec}
+\log _2\left({depth}_{max} - {depth}_{min}\right) \times 30 \approx 350 \mbox{bits/sec}
 \end{equation}
 
 \subsection{Central Distance with Size}
@@ -98,7 +98,7 @@ It is possible to calculate the physical width and height of the field-of-view u
 {FOV}_{height} = 2 \times d \times \tan\frac{45\degree}{2}
 \end{equation}
 
-Where 58\degree  and 45\degree  are the horizontal and vertical \ac{FOV} of the XTION camera respectively~\cite{xtion-spec}. 
+Where 58\degree  and 45\degree  are the horizontal and vertical \ac{FOV} of the Xtion camera respectively~\cite{xtion-spec}. 
 
 This information alone is no more useful to for navigational purposes than the distance to central point - however, by extracting the object at the center of the image, and determining how much of the \ac{FOV} it occupies, it is possible to calculate the area of the object.
 
@@ -112,7 +112,7 @@ Using the Magic Wand extraction technique described in section \ref{sec:magicwan
 An indicator of the real-terms size of the object was calculated using the following formula:
 
 \begin{equation}
-    {Object Area} = \frac{\sum\limits_x\sum\limits_y {binaryImage}({x}, {y})}{{ImageArea}} ({FOV}_{width} \times {FOV}_{height})
+    \mbox{Object Area} = \frac{\sum\limits_x\sum\limits_y \mbox{binaryImage}({x}, {y})}{\mbox{ImageArea}} ({\mbox{FOV}}_{\mbox{width}} \times {\mbox{FOV}}_{\mbox{height}})
 \end{equation}
 
 The amplitude of the sine-wave being generated according to the specification in section \ref{sec:centraldistance} was then varied according to the area calculated using the above formula.
@@ -126,18 +126,25 @@ It was proven experimentally that by varying the amplitude of the sound-wave acc
 
 \section{Shared Components}
 \label{sec:sharedcomponents}
-\subsection{Object Extraction}
-\subsubsection{Magic Wand}
+\subsection{Magic Wand}
 \label{sec:magicwand}
+For cases where the object of interest is at the center of the image, a magic-wand style approach was used for object extraction. 
+
+Searching the Matlab file exchange, a module able to perform magic wand extraction was found\~cite{magicwandmatlab}. The module provides a function, \texttt{magicwand(im, ylist, xlist, tolerance)} that for a given image, set of {x,y} co-ordinates, and a tolerance, creates a mask.
+
+The magic wand tool is based on a flood fill algorithm. For a given point, 
+
+
+
 
 \subsection{Tone Generation}
 Although Matlab is more than capable of generating and playing back a sine wave, it is not possible to do so while simultaneously performing another task, as it is not possible to write threaded software using normal Matlab syntax. Due to the real-time nature of the system, it was necessary to be able to play back a sine-wave while simultaneously processing video.
 
 In on order to accomplish this, a Java class was developed. This class exposes methods for setting tone frequency, setting tone amplitude and setting pulse duration - internally, a worked tone-generation thread is created. Using this class, it is possible to play back a tone in a non-blocking way. 
 
-Internally, the module uses the \lstinline|javax.sound.sampled| package. 
+Internally, the module uses the \texttt{javax.sound.sampled} package. 
 
-\begin{lstlisting}[language=Java, caption={Fundementals of Tone Generation}]
+\begin{minted}{java}
 BUFFER_SIZE = 2048;
 i = 0;
 buffer = new byte[BUFFER_SIZE];
@@ -154,7 +161,7 @@ while(true){
     i++;
 }
     
-\end{lstlisting}
+\end{minted}
 
 Support for pulsing the tone was also implemented. 
 

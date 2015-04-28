@@ -1,7 +1,5 @@
 #!/bin/bash
 
-rm -f *.bbl *.blg *.log *.xml *.aux main-blx.bib
-texi2pdf main.tex
-rm -f *.bbl *.blg *.log *.xml *.aux main-blx.bib
+pdflatex --shell-escape main.tex
 texcount main.tex MainBody/*.tex Support/*.tex
 open main.pdf

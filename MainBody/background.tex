@@ -69,7 +69,26 @@ Although this system seems fairly effective, it is not without limitations.
 
 This paper describes a technique whereby points are assigned to ``receptive fields''. Each field has a static position, and is assigned loudness, determined by the Z-axis position of the points within the field. Unlike the method discussed in section \ref{sec:vas}, TheVIBE does not use a full \ac{HRTF} to convey field position; rather, it uses an inter-aural loudness difference (similar to stereo panning) to describe horizontal position, and tone frequency variation to describe vertical position.
 
+\subsection{EyeMusic}
+\subsection{PSVA}
+
+\subsection{Summary of existing works}
+
+\section{Proposed Solution}
+MOVE TO ITS OWN CHAPTER
+An ideal sensory substitution system should convey as much \textbf{relevant} information to the user as possible. Bearing in mind the limited bit-rate of the human auditory system (as mentioned in section \ref{sec:compression}), it was decided that the system should have two modes of operation: a navigation mode, and a detail mode
+
+\subsection{Navigation Mode}
+The navigational component of the system is responsible for conveying relevant information about the users surroundings for use when navigating. The use-case for this mode is similar to the use-case for a white cane.
+
+The system should address some of the issues found with the cane --- for instance, effective range should be greater than the two paces that a cane provides~\cite{mobilityenhancement}. Additionally, the system should not, as is the case with a cane, be limited to detecting obstacles on the floor --- the field-of-view of the system should be as large as possible.
+
+\subsection{Detail Mode}
+The ``detail mode'' of the system should convey detail about a specific object to the user of the system, rather than giving them a general overview of their environment. As much details a possible should be conveyed --- the exact amount of information should be determined experimentally.
+
 \section{Methods and Tools}
+MOVE THIS TO IMPLEMENTATION
+
 \subsection{Hardware}
 The use of a depth-sensing camera has multiple advantages in the context of this project.
 
@@ -78,16 +97,16 @@ For navigational assistance, it is crucial to be able to know how far away obsta
 It is also important when conveying the shape or structure of an object to a user. To extract an individual object from an image, we need to know the object boundaries. In a high contrast scenario --- for instance, a red object on a yellow background, this is possible using only image data. However, in a lower-contrast situation, for instance a gray object on a black background, this can be more difficult. This report details a method that allows depth information to be combined with image data, demonstrating improvements over image/depth segmentation alone. 
 
 \subsection{Structured Light}
-The XTION~\cite{xtion} device used in this project uses a technique involving structured light in order to compute the depth-map of a scene.
+The Xtion~\cite{xtion} device used in this project uses a technique involving structured light in order to compute the depth-map of a scene.
 
-The XTION projects a known pattern of structured \ac{IR} laser light onto the scene, and using an \ac{IR} camera, receives the location and shape of each \ac{IR} point. The camera does not use a lens like those found on normal, visible-light cameras --- it has what's known as an astigmatic lens. An astigmatic lens has a focal-length along the X-axis that differs to that along the Y-axis. For instance, if the projected pattern consisted of many circular points, due to astigmatism in the lens, the image read back by the infra-red camera would consist of many elliptical points, varying in eccentricity according to distance between the point and the projector.
+The Xtion projects a known pattern of structured \ac{IR} laser light onto the scene, and using an \ac{IR} camera, receives the location and shape of each \ac{IR} point. The camera does not use a lens like those found on normal, visible-light cameras --- it has what's known as an astigmatic lens. An astigmatic lens has a focal-length along the X-axis that differs to that along the Y-axis. For instance, if the projected pattern consisted of many circular points, due to astigmatism in the lens, the image read back by the infra-red camera would consist of many elliptical points, varying in eccentricity according to distance between the point and the projector.
 
 Using the change in eccentricity for each point, the device is able to construct a depth-map of the scene in real-time.
 
-This sensor was developed by a company called Primesense, and is quite well supported --- drivers are available for all major platforms. The XTION is also supported by OpenNI, a framework used to develop software for ``Natural Interaction'' devices. 
+This sensor was developed by a company called Primesense, and is quite well supported --- drivers are available for all major platforms. The Xtion is also supported by OpenNI, a framework used to develop software for ``Natural Interaction'' devices. 
 
 \subsection{Other Techniques}
-Use of structured light is not the old technique that has been developed to acquire depth-maps - other methods exist, for instance, Time-of-Flight and Stereoscopic systems. The Asus XTION was chosen over other devices, as it is fairly in-expensive (\~£100), and can be powered by USB alone (other devices, such as the Microsoft Kinect, require mains power to operate). 
+Use of structured light is not the old technique that has been developed to acquire depth-maps - other methods exist, for instance, Time-of-Flight and Stereoscopic systems. The Asus Xtion was chosen over other devices, as it is fairly in-expensive (\~£100), and can be powered by USB alone (other devices, such as the Microsoft Kinect, require mains power to operate). 
 
 \subsection{Software}
 A majority of the development work done over the course of this project has been in Matlab, although Java and C++ have also been used.
@@ -97,7 +116,7 @@ It was decided that Matlab was the right tool for the job for several reasons.
 
 Firstly, Matlab has a lot of relevant functionality ``baked-in'' - for instance, an \ac{FFT} can be performed on a vector in one line: \lstinline$fft(vector)$, with no additional libraries required. This is not the case with many other languages. This makes prototyping much quicker, as it is not necessary to totally re-invent the wheel when trying new ideas.
 
-Wrappers for OpenNI are available for Matlab, making interaction with the XTION camera - the wrapper is open-source, so any modifications can be made quite easily.
+Wrappers for OpenNI are available for Matlab, making interaction with the Xtion camera - the wrapper is open-source, so any modifications can be made quite easily.
 
 Another major factor in choosing Matlab over another language is the amount of support available, both physically from my Project Supervisor, and online from the Matlab community. 
 
@@ -109,6 +128,6 @@ As large parts of Matlab run in the \ac{JVM}, it is possible to use Java classes
 Matlab r2014a runs under the Java JVM version 1.7 - as such, any development must be done using the Java 7 JDK or below. 
 
 \subsubsection{C/C++}
-C/C++ functions can be exported to the Matlab environment through the use of MEX-files. The OpenNI wrapper used to interact with the XTION camera was written using C++ and MEX, and required some modifications.
+C/C++ functions can be exported to the Matlab environment through the use of MEX-files. The OpenNI wrapper used to interact with the Xtion camera was written using C++ and MEX, and required some modifications.
 
 Additionally, a C++ based Video Segmentation~\cite{videosegment} tool written by Google and Georgia Tech was trialled, and was also slightly modified.
