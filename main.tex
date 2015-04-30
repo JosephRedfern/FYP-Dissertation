@@ -12,6 +12,7 @@
 \usepackage[numbered,framed]{matlab-prettifier}
 \usepackage[printonlyused]{acronym}
 \usepackage{gensymb}
+\usepackage{algorithmic}
 \usepackage{minted}
 
 \usepackage[
@@ -74,7 +75,7 @@ bindingoffset=10mm, top=25mm,bottom=25mm}
 }
 
 \begin{document}
-
+\frontmatter
 \thispagestyle{empty}
 
 {%%%
@@ -85,7 +86,7 @@ bindingoffset=10mm, top=25mm,bottom=25mm}
 ~\vspace{\fill}
 
 {\huge 
-    Video to Audio converstion for the Visually Impared
+    Video to Audio Conversion for the Visually Impaired
 }
 
 \vspace{2.5cm}
@@ -101,7 +102,8 @@ Cardiff University
 
 \vspace{3.5cm}
 
-Supervisor: Dr Kirill Sidorov 
+Supervisor: Dr Kirill Sidorov \\
+Moderator: Dr George Theodorakopoulos
 
 \vspace{\fill}
 
@@ -122,15 +124,23 @@ May 2015
 \lstlistoflistings
 
 \clearpage
+\mainmatter
 
 \chapter{Introduction}
 \input{MainBody/intro.tex}
 
+\chapter{Proposed Solution}
+\input{MainBody/proposed-solution.tex}
+
 \chapter{Background}
 \input{MainBody/background.tex}
 
+\chapter{Relevant Theory}
+\input{MainBody/relevant-theory.tex}
+
 \chapter{Implementation}
 \input{MainBody/implementation.tex}
+
 \clearpage
 \input{acronyms.tex}
 

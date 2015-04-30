@@ -1,3 +1,4 @@
+\label{chap:introduction}
 \ac{WHO} figures claim that as as of 2012, there are 285 million people suffering from visual imparements~\cite{whoblindness}, 30 million of whom are blind. The \ac{WHO} also state that 90\% of the visually impared live in developing countries. Combined with statistics from the guide dogs for the blind association, who claim that the life-time cost of training and keeping a guide dog is around £50,000, a sad picture is painted the majority who are unable to afford visual aids.
 
 \section{Aims and Goals}
@@ -10,7 +11,7 @@ The goal of the project is to provide a functional system, able to be used to ef
 \section{Intended Audience}
 The main intended audience for this project is the visually impared. It is anticipated that the ``tech savvy'' visually impared would be interested in trialling the prototypes, both for day-to-day use, and to assist in further development.
 
-The system does is not intended to replace all other forms of visual assistance - rather, it intends to assist those who are unable to afford luxuries such as Guide-dogs or Guide-horses~\cite{guidehorse}. A low-cost system that is capable of assisting a user in navigating a room and detecting obsticles has the potential to be life changing - even if only a small fraction of a normal, functional visual system can be imitated, 0.01\% is infinitley greater than 0.00\%.
+The system is not intended to replace all other forms of visual assistance - rather, it intends to assist those who are unable to afford luxuries such as Guide-dogs or Guide-horses~\cite{guidehorse}. A low-cost system that is capable of assisting a user in navigating a room and detecting obsticles has the potential to be life changing - even if only a small fraction of a normal, functional visual system can be imitated, 0.01\% is infinitley greater than 0.00\%.
 
 \section{Project Scope}
 The project has a fairly broad scope, and includes:
@@ -26,7 +27,7 @@ The project has a fairly broad scope, and includes:
 Components/considerations \textbf{outside} of the scope of this project are:
 \begin{itemize}
     \item \textbf{Camera Evauluation} \hfill \\
-        Detailed evaluation of the various types of depth-sensing cameras is out of scope of this project. 
+        Detailed evaluation of specific models of depth-sensing cameras is out of the scope of this project. 
     \item \textbf{Robust Testing} \hfill \\
         It is not anticipated that the system described in this report go into immediate production -- in-depth safety testing is out-of-scope. 
     \item \textbf{In-depth UX/UI development} \hfill \\
@@ -39,9 +40,11 @@ I took a parallel approach while researching my solution to the problem. Rather 
 \section{Assumptions}
 Several assumptions have been made during the development of the software.
 
-Firstly, it is assumed that the system will be used indoors. The Asus Xtion Pro Live camera~\cite{xtion} camera chosen for use in the project uses \ac{IR} laser light to measure distance. In direct sunlight, the \ac{IR} radiation emmitted by the sun over-powers the \ac{IR} light emitted by the Xtion, resulting in in-accurate readings. This is a limitation of a majority of \ac{RGB-D} cameras using structured light or Time-of-flight, although future work could involve the use of a stereoscopic camera setup as a solution to the problem.
+Firstly, it is assumed that the system will be used indoors. The Asus Xtion Pro Live camera~\cite{xtion} chosen for use in the project uses \ac{IR} laser light to measure distance. In direct sunlight, the \ac{IR} radiation emmitted by the sun over-powers the \ac{IR} light emitted by the Xtion, resulting in in-accurate readings. This is a limitation of a majority of \ac{RGB-D} cameras using structured light or Time-of-flight, although future work could involve the use of a stereoscopic camera setup as a solution to the problem.
 
 Secondly, as the systems described in this report convey information in the form of audio, it is assumed that the user of the system has a functional auditory system. Insert statistics here about deafblind if possible - if not, extrapolate based on percentage of blind and percentage of deaf.
 
-\section{Summary of Outcomes}
+Additionally, it is assumed that the potential user of the system would be willing to carry a portable computer (i.e. laptop) and Xtion Camera during it's operation.
+
+\section{Contributions}
 The report details several approaches to solving the problem of sonification of image and depth data, for both navigation and semantic understanding purposes. 

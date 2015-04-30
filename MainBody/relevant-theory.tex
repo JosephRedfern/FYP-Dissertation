@@ -1,0 +1,94 @@
+\section{Stereopsis}
+Stereopsis, translating literally to ``Solid Appearance'', is the ability to perceive depth. For people with two functioning eyes, this is done sub-consciously by the brain, by observing the differences between the image received by each eye.
+
+Being aware of the depth information in a scene has multiple advantages in the context of this project.
+
+For navigational assistance, it is crucial to be able to know how far away obstacle are, so we are able to warn them that something is blocking their path.
+
+It is also important when conveying the shape or structure of an object to a user. To extract an individual object from an image, we need to know the object boundaries. In a high contrast scenario --- for instance, a red object on a yellow background, this is possible using only image data. However, in a lower-contrast situation, for instance a gray object on a black background, this can be more difficult. This report details a method that allows depth information to be combined with image data, demonstrating improvements over image/depth segmentation alone. 
+
+As traditional cameras are unable to accurately infer depth, a depth-sensing camera must be used to acquire depth information.
+
+In this section of the report, a basic overview of different ways of digitally acquiring depth information is provided.
+
+\subsection{Structured Light}
+The Xtion~\cite{xtion} device used in this project uses a technique involving structured light in order to compute the depth-map of a scene.
+
+The Xtion projects a known pattern of structured \ac{IR} laser light onto the scene, and using an \ac{IR} camera, receives the location and shape of each \ac{IR} point. The camera does not use a lens like those found on normal, visible-light cameras --- it has what's known as an astigmatic lens. An astigmatic lens has a focal-length along the X-axis that differs to that along the Y-axis. For instance, if the projected pattern consisted of many circular points, due to astigmatism in the lens, the image read back by the infra-red camera would consist of many elliptical points, varying in eccentricity according to distance between the point and the projector.
+
+Using the change in eccentricity for each point, the device is able to construct a depth-map of the scene in real-time.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.3\textwidth]{Theory/kinect_ir_pattern.jpg}
+\caption{IR Pattern from Kinect Device~\cite{primesense-irstream}}
+\end{figure}
+
+This sensor was developed by a company called Primesense, and is quite well supported --- drivers are available for all major platforms. The Xtion is also supported by OpenNI~\cite{openni}, a framework used to develop software for ``Natural Interaction'' devices. 
+
+\subsection{Other Techniques}
+Use of structured light is not the old technique that has been developed to acquire depth-maps - other methods exist, for instance, Time-of-Flight and Stereoscopic systems. The Asus Xtion was chosen over other devices, as it is fairly in-expensive (\~£100), and can be powered by USB alone (other devices, such as the Microsoft Kinect, require mains power to operate). 
+
+\section{Image Segmentation}
+There are many different techniques for segmenting images in Computer Vision --- however, there is no ``one size fits all'' solution, each method has pros and cons. 
+
+This section aims to describe some different methods, along with explanations as to why they are/are not relevant to this project.
+
+\subsection{Histogram Thresholding} 
+Histogram Thresholding is a way of segmenting an image into a binary mask consisting of the background and the foreground. This is acheived by analysing the frequency distribution of image intensity values, and choosing a point on this histogram at which to split the image into two parts.  
+
+There are several specific implementations, although they can be generalised into the following form:
+\begin{equation}
+f: \left\{{0,1,2,...,255}\right\} \rightarrow [0, 1]
+\end{equation}
+
+\subsubsection{Example}
+Consider this image:
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.33\textwidth]{Theory/lena-gray.jpg}
+    \caption{Lena}
+\end{figure}
+
+The histogram of this grayscale image is as follows:
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{Theory/lena-gray-hist.png}
+    \caption{Histogram of Lena Image}
+\end{figure}
+
+The peaks on the histogram correspond to the dominant gray tones in the image --- dark to light, from left to right.
+
+There are various algorithms to choose the exact point on the histogram at which to threshold, each having their own merit. Automatic, un-assisted thresholding is often considered on of the most difficult tasks in Computer Vision (http://www.math.tau.ac.il/~turkel/notes/otsu.pdf), so unless the environment is well-known, alternative methods of segmentation may be more appropriate.
+
+\subsection{Flood Fill}
+The flood fill algorithm is used to select an area of an image, based on an initial ``Seed Pixel'' and a threshold value.
+
+A recursive flood-fill algorithm can be described as follows. Neighbouring pixels to the initial seed pixels are examined --- if the difference between the initial seed pixel and the neighbour pixel is less than the given threshold value, then the neighbour pixel is marked as being part of the seed pixel. The algorithm the repeats on all similar neighbouring pixels, always comparing pixels to the \textbf{initial} seed pixel.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Theory/lena-dot.png}
+        \caption{Initial Seed Point}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Theory/lena-dot-thresh.png}
+        \caption{After extraction with tolerance=100}
+    \end{subfigure}
+\end{figure}
+
+This method can work well if the location of the initial seed pixel is known, however, is not so useful if the starting point is unknown.
+
+\subsection{K-Means}
+The K-Means algorithm is used to partition a collection of objects into $K$ groups. In the context of Computer Vision, an object is a pixel, and a group is a region.
+
+The algorithm is supplied with $K$ initial colours - ideally belonging to the $K$ regions that the image should be segmented into. These colours are known as ``Initial Group Centroids''.
+
+Each pixel in the image is assigned to the most similar centroid. The value of the centroid is then updated to be set to the mean of it's member pixels.
+
+This process is then repeated, with the value of the centroid being updated with each pass - this can be done a fixed number of times, or until each centroid value converges.

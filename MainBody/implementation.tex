@@ -1,9 +1,33 @@
 \section{Introduction}
-This section of the report details the experimental approach taken when developing the systems responsible for the two main modes of (Navigation and Detail).
+This chapter of the report details the experimental approach taken when developing the systems responsible for the two main modes of (Navigation and Detail).
 
 Each mode has differing functionality, but shares some common components --- the specifics of these components have been detailed in section \ref{sec:sharedcomponents}.   
 
 \section{Technical Background}
+\subsection{Languages}
+A majority of the development work done over the course of this project has been in Matlab, although Java and C++ have also been used.
+
+\subsubsection{Matlab}
+It was decided that Matlab was the right tool for the job for several reasons.
+
+Firstly, Matlab has a lot of relevant functionality ``baked-in'' - for instance, an \ac{FFT} can be performed on a vector in one line: \lstinline$fft(vector)$, with no additional libraries required. This is not the case with many other languages. This makes prototyping much quicker, as it is not necessary to totally re-invent the wheel when trying new ideas.
+
+Wrappers for OpenNI are available for Matlab, making interaction with the Xtion camera - the wrapper is open-source, so any modifications can be made quite easily.
+
+Another major factor in choosing Matlab over another language is the amount of support available, both physically from my Project Supervisor, and online from the Matlab community. 
+
+The project has been developed using Matlab r2014a, although should be backwards-compatible with most recent releases. 
+
+\subsubsection{Java}
+As large parts of Matlab run in the \ac{JVM}, it is possible to use Java classes directly from within Matlab. This was taken advantage of in order to use threads, which is something that Matlab does not support out of the box. 
+
+Matlab r2014a runs under the Java JVM version 1.7 - as such, any development must be done using the Java 7 JDK or below. 
+
+\subsubsection{C/C++}
+C/C++ functions can be exported to the Matlab environment through the use of MEX-files. The OpenNI wrapper used to interact with the Xtion camera was written using C++ and MEX, and required some modifications.
+
+Additionally, a C++ based Video Segmentation~\cite{videosegment} tool written by Google and Georgia Tech was trialled, and was also slightly modified.
+
 \subsection{Data Acquisition}
 The Asus Xtion Pro Live~\cite{xtion} camera used in this project is compatible with OpenNI, a framework used for developing ``Natural Interaction'' software.
 
@@ -72,7 +96,7 @@ Building on this basic idea, a way of conveying this distance was developed. By 
 This required the development of the tone-generation Java class detailed in \ref{sec:tonegen}, and the source-code for this prototype can be found in the file centralTone.m.
 
 \subsubsection{System Performance}
-As the algorithm is quite straight-forward, the software implementing it was not excessively CPU intensive. Measuring the performance of the script gave estimates that it performed at roughly 30FPS - this limitation was probably due to the overhead of displaying the image of the depth map using \texttt{imshow()}, which was only being done for development purposes.
+As the algorithm is quite straight-forward, the software implementing it was not excessively CPU intensive. Measuring the performance of the script gave estimates that it performed at roughly 30Hz --- this limitation was probably due to the overhead of displaying the image of the depth map using \texttt{imshow()}, which was only being done for development purposes.
 
 \subsubsection{Effectiveness}
 The system was tested by walking around a room blindfolded, using only the camera to avoid obstacles. The test was a success --- the mapping from frequency to distance was quite intuitive, and there were no ``crashes'', in terms of both software and the physical sense.
@@ -119,7 +143,7 @@ The amplitude of the sine-wave being generated according to the specification in
 
 \subsubsection{System Performance}
 
-The overhead of having to extract the object from the center of the image reduced the frame processing rate to roughly 14FPS, however this slowdown was barely noticable when using the system
+The overhead of having to extract the object from the center of the image reduced the frame processing rate to roughly 14Hz, however this slowdown was barely noticable when using the system
 
 \subsubsection{Effectiveness}
 It was proven experimentally that by varying the amplitude of the sound-wave according to the object area, and varying the sound-wave frequency according to the method described in section \ref{sec:centraldistance}, a user could infer both the size of, and the distance to an object. 
