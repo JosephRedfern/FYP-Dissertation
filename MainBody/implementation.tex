@@ -148,18 +148,27 @@ The overhead of having to extract the object from the center of the image reduce
 \subsubsection{Effectiveness}
 It was proven experimentally that by varying the amplitude of the sound-wave according to the object area, and varying the sound-wave frequency according to the method described in section \ref{sec:centraldistance}, a user could infer both the size of, and the distance to an object. 
 
+
+\subsection{Multi-point distance}
+Building on the method developed in section \ref{sec:centraldistance}, a system able to communicate distance to multiple points simultaneously was also designed.
+
+Rather than simply conveying the distance to the central point in the image, a grid of points was used.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Navigation/multi-tone.png}
+    \caption{Multi-point grid}
+\end{figure}
+
+The left column of points was assigned the left stereo channel, the right column was assigned the right stereo channel, with the center column being assigned both stereo channels. 
+
 \section{Shared Components}
 \label{sec:sharedcomponents}
 \subsection{Magic Wand}
 \label{sec:magicwand}
-For cases where the object of interest is at the center of the image, a magic-wand style approach was used for object extraction. 
+For cases where the object of interest is at a known location in the image, a magic-wand style approach was used for object extraction. 
 
-Searching the Matlab file exchange, a module able to perform magic wand extraction was found\~cite{magicwandmatlab}. The module provides a function, \texttt{magicwand(im, ylist, xlist, tolerance)} that for a given image, set of {x,y} co-ordinates, and a tolerance, creates a mask.
-
-The magic wand tool is based on a flood fill algorithm. For a given point, 
-
-
-
+Searching the Matlab file exchange, a module able to perform magic wand extraction was found\~cite{magicwandmatlab}. The module provides a function, \texttt{magicwand(im, ylist, xlist, tolerance)} that for a given image, set of {x,y} co-ordinates, and a tolerance, creates a mask using the flood-fill algorithm described in section \ref{sec:floodfill}.
 
 \subsection{Tone Generation}
 Although Matlab is more than capable of generating and playing back a sine wave, it is not possible to do so while simultaneously performing another task, as it is not possible to write threaded software using normal Matlab syntax. Due to the real-time nature of the system, it was necessary to be able to play back a sine-wave while simultaneously processing video.
@@ -195,14 +204,14 @@ The development of Detail mode was a much more complicated task than the develop
 \subsection{Image Segmentation}
 Although the primary deliverable of the project was not to invent a new image segmentation algorithm, the method of image segmentation was an important choice.
 
-It was decided that a depth-sensing camera~\cite{xtion} would be used in order to assist with region extraction. Rather than relying solely on RGB data and difference in colour to extract objects from the video footage, depth data would also be considered. This choice was made, as object-segmentation was desired --- if a white cup was placed on a white table, traditional colour-based segmentation algorithms may struggle to differentiate between the object and the surfact on which the object was sitting.
+It was decided that a depth-sensing camera~\cite{xtion} would be used in order to assist with region extraction. Rather than relying solely on RGB data and difference in colour to extract objects from the video footage, depth data would also be considered. This choice was made, as object-segmentation was desired --- if a white cup was placed on a white table, traditional colour-based segmentation algorithms may struggle to differentiate between the object and the surface on which the object was sitting.
 
-As majority of image segmentation algorithm implmentations consider only colour information for segmentation; it was not possible to use an off-the-shelf MATLAB module to complete this task. After reviewing publications on segmentation using both depth and RGB data, a few different approaches were trialled.
+As majority of image segmentation algorithm implementations consider only colour information for segmentation; it was not possible to use an off-the-shelf MATLAB module to complete this task. After reviewing publications on segmentation using both depth and RGB data, a few different approaches were trialled.
 
 \subsubsection{Standard Deviation}
-As an intial experiment, I attempted to highlight ``interesting'' subsections of the image. This was accomplished by using a sliding window over the RGB image, calculating the standard deviation of the pixels in the window. The resulting image was then thresholded and used on a mask on the orignal image,
+As an initial experiment, I attempted to highlight ``interesting'' subsections of the image. This was accomplished by using a sliding window over the RGB image, calculating the standard deviation of the pixels in the window. The resulting image was then thresholded and used on a mask on the original image,
 
-This method was quite succesful - the resulting image only contained objects that stood out on the input image.
+This method was quite successful --- the resulting image only contained objects that stood out on the input image.
 
 \begin{figure}[H]
     \centering
@@ -220,7 +229,7 @@ This method was quite succesful - the resulting image only contained objects tha
 The main issue with this approach was that Depth Information was not used --- cases where objects had little RGB contrast would not be picked out. 
 
 \subsubsection{K-Means with 4 channels}
-One approach was to use a standard K-Means image segmentation algorithm~\cite{kmeans-matlab}, with an additional channel added, representing depth. 
+One approach was to use a standard K-Means (see section \ref{sec:kmeans}) image segmentation algorithm taken from the Matlab File Exchange~\cite{kmeans-matlab}, with an additional channel added, representing depth. 
 
 \begin{figure}[H]
     \centering
@@ -249,9 +258,7 @@ One approach was to use a standard K-Means image segmentation algorithm~\cite{km
     \caption{RGBD K-means segmentation}
 \end{figure}
 
-This was fairly succesful, however was very vulnerable to noise --- only images acquired in environments with perfect lighting provided good segmentation results. 
-
-These results were fairly good - the addition of the depth channel resulted in a smoother segmentation. However, using raw images from the camera for segmentation resulted in a fairly noisy image. Applying a gaussian blur to the image ($\diameter = 5$, $\sigma = 2$) removed some of the noise, at the expense of sharpness in the image.
+These results were fairly good - the addition of the depth channel resulted in a smoother segmentation. However, using raw images from the camera for segmentation resulted in a fairly noisy image. Applying a Russian blur to the image ($\diameter = 5$, $\sigma = 2$) removed some of the noise, at the expense of sharpness in the image.
 
 \begin{figure}[H]
     \centering
@@ -259,24 +266,53 @@ These results were fairly good - the addition of the depth channel resulted in a
     \caption{Segmentation of blurred RGBD image}
 \end{figure}
 
+Another slight problem with the K-means approach was speed at which it could be performed. While not nearly as slow was some other approaches (such as K-Nearest Neighbour and Graphcuts), performance was limited to the 1-3Hz range.
+
 \subsubsection{K-Nearest Neighbour}
 
+
 \subsubsection{Channel Swapping}
-As mentioned, most segmentation algorithms support only RGB data. With this in mind, another approach taken was to remove a colour channel from the RGB image, and swap it with the depth image. This was quite sucessful --- the resulting segmentation was more accurate than either RGB or Depth alone.
+As mentioned, most segmentation algorithms support only RGB data. With this in mind, another approach taken was to remove a colour channel from the RGB image, and swap it with the depth image. This was quite successful --- the resulting segmentation was more accurate than either RGB or Depth alone.
 
 \subsubsection{Graph Cuts}
-Attempts were made to use the Graph Cuts algoritm [REF] in order to segment the video and depth data. However, it became apparent that this approach was taking orders of magnitude longer than we could reasonably spend processing each frame; we wanted the system to run as close to real-time as possible.
+Attempts were made to use the Graph Cuts algorithm [REF] in order to segment the video and depth data. However, it became apparent that this approach was taking orders of magnitude longer than we could reasonably spend processing each frame; we wanted the system to run as close to real-time as possible.
 
-\subsection{Feature Extraction}
+\subsection{Conveying Shape Properties}
+Two main ways of conveying details about a given shape were considered.
 
-\subsubsection{Basis Shapes}
+The first, and perhaps most obvious method was to encode and transmit various shape descriptors directly. For instance, the amplitude of a tone of a particular frequency could convey the area of the shape, with a different frequency being used for number of corners, etc etc. This method relies on the shape descriptors being intuitively linked to physical properties of the shape.
 
-\subsubsection{Zernike Moments}
-Zernike Moments ---ref--- are a set of orthogonal moments ---EXPAND---. Due to their orthogonality, it is possible for a computer to compress an image or shape very efficiently using Zernike Moments. 
+The second possible method was to transmit details of a shape in terms of similarity to other ``basis'' shapes.
 
-With this in mind, I attempted to express the extracted shape in terms of Zernike Moments --- the theory being that given the Zernike moments, a human may be able to re-construct the image mentally.
+For instance, consider a method of describing shapes, consisting of 5 parameters. Applying this method to a set of $n$ basis shapes (for instance a circle, square, star and triangle) would yield $n$ sets of 5 parameters. By parametrising an arbitrary shape, and comparing the resulting vector of parameters to the parameter vectors of our basis shapes, it is possible to get a measure of the similarity of our arbitrary shape.
 
-By assigning a harmonic to each Zernike moment, and varying the amplitude of each harmonic according to the moment value, a tone was generated. I then proceeded to pass various shapes into the algorithm, listening to the tone.
+This section of the report details the effectiveness of various methods of conveying different shape properties, using both ``direct encoding'' and basis shape methods.
 
-Although the tone varied with each shape, it was not possible to identify individual shapes using this system --- it was unclear how a change in the amplitude of a particular harmonic corresponded to changes in shape. 
+\subsubsection{Zernike Moments - Direct Encoding}
+\paragraph{Direct Encoding}
+By assigning a harmonic to each of the Zernike moments, and varying the amplitude of each harmonic according to the moment value, a tone was generated. I then proceeded to pass various shapes into the algorithm, listening to the tone.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[h]{0.2\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Detail/zernike-input.png}
+        \caption{Input Image}
+    \end{subfigure}
+    \begin{subfigure}[h]{0.7\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Detail/zernike-graph.png}
+        \caption{Zernike Moments for given input}
+    \end{subfigure}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Detail/zernike-tone.png}
+    \caption{Resulting Tone}
+\end{figure}
+
+Although the tone varied with each shape, it was not possible to identify individual shapes using this system --- it was unclear how a change in the amplitude of a particular harmonic corresponded to changes in shape.
+
+\paragraph{Zernike Moments - Basis Shapes}
 

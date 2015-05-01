@@ -31,6 +31,7 @@ Use of structured light is not the old technique that has been developed to acqu
 
 \section{Image Segmentation}
 There are many different techniques for segmenting images in Computer Vision --- however, there is no ``one size fits all'' solution, each method has pros and cons. 
+\label{sec:segment}
 
 This section aims to describe some different methods, along with explanations as to why they are/are not relevant to this project.
 
@@ -47,23 +48,24 @@ Consider this image:
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.33\textwidth]{Theory/lena-gray.jpg}
+    \includegraphics[width=0.33\textwidth]{Theory/lena-grey.jpg}
     \caption{Lena}
 \end{figure}
 
-The histogram of this grayscale image is as follows:
+The histogram of this greyscale image is as follows:
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{Theory/lena-gray-hist.png}
+    \includegraphics[width=\textwidth]{Theory/lena-grey-hist.png}
     \caption{Histogram of Lena Image}
 \end{figure}
 
-The peaks on the histogram correspond to the dominant gray tones in the image --- dark to light, from left to right.
+The peaks on the histogram correspond to the dominant grey tones in the image --- dark to light, from left to right.
 
 There are various algorithms to choose the exact point on the histogram at which to threshold, each having their own merit. Automatic, un-assisted thresholding is often considered on of the most difficult tasks in Computer Vision (http://www.math.tau.ac.il/~turkel/notes/otsu.pdf), so unless the environment is well-known, alternative methods of segmentation may be more appropriate.
 
 \subsection{Flood Fill}
+\label{sec:floodfill}
 The flood fill algorithm is used to select an area of an image, based on an initial ``Seed Pixel'' and a threshold value.
 
 A recursive flood-fill algorithm can be described as follows. Neighbouring pixels to the initial seed pixels are examined --- if the difference between the initial seed pixel and the neighbour pixel is less than the given threshold value, then the neighbour pixel is marked as being part of the seed pixel. The algorithm the repeats on all similar neighbouring pixels, always comparing pixels to the \textbf{initial} seed pixel.
@@ -85,10 +87,50 @@ A recursive flood-fill algorithm can be described as follows. Neighbouring pixel
 This method can work well if the location of the initial seed pixel is known, however, is not so useful if the starting point is unknown.
 
 \subsection{K-Means}
+\label{sec:kmeans}
 The K-Means algorithm is used to partition a collection of objects into $K$ groups. In the context of Computer Vision, an object is a pixel, and a group is a region.
 
-The algorithm is supplied with $K$ initial colours - ideally belonging to the $K$ regions that the image should be segmented into. These colours are known as ``Initial Group Centroids''.
+The algorithm is supplied with $K$ initial colours - ideally (but not necessarily) belonging to the $K$ regions that the image should be segmented into. These colours are known as ``Initial Group Centroids''.
 
 Each pixel in the image is assigned to the most similar centroid. The value of the centroid is then updated to be set to the mean of it's member pixels.
 
 This process is then repeated, with the value of the centroid being updated with each pass - this can be done a fixed number of times, or until each centroid value converges.
+
+\subsubsection{Example}
+The following is an example of the result of K-means clustering with $K = 3$, with randomly selected Initial Group Centroids.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Theory/lena-grey.jpg}
+        \caption{Input Image}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Theory/lena-kmeans.png}
+        \caption{K-Means clustering, with $K = 3$}
+    \end{subfigure}
+\end{figure}
+
+\section{Elliptic Fourier Descriptors}
+Elliptic Fourier Descriptors are the result of performing an \ac{EFT}, and can be used to describe the shape of a contour.
+
+Before computing the EFD of an image, its contour needs to be extracted. This can be be done by segmenting the image (using a technique described in \ref{sec:segment}), then finding the outermost contour of the segment. This can be done using one of many possible contour tracing techniques, such as Moore Neighbourhood Tracing.
+
+\subsection{Chain Code}
+The first step of the Elliptic Fourier Transform is to compute the chain code of the contour.
+
+Chain codes are used to losslesly encode a monochrome image --- they describe the connectivity of a list of points, relative to each point.
+
+\section{Image Moments}
+Formally, the moment of an image can be defined as:
+
+\begin{equation}
+M_{ij} = \sum_x \sum_y x^i y^j I(x,y)\,\!
+\end{equation}
+
+
+\subsection{Zernike Moments}
+\label{sec:zernike}
+Zernike Moments are a set of image moments with specific $i$ and $j$ parameters. They are orthogonal --- i.e. there is no redundancy between each parameter, which make them very efficient descriptors.
