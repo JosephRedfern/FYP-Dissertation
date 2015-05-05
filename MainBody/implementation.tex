@@ -66,111 +66,18 @@ By default, both \texttt{mxNiPhoto()} and \texttt{mxNiDepth()} return $320\times
 The data returned by \texttt{mxNiPhoto()} is a 3-channel image containing 8-bit integer intensity values for the Red, Green and Blue channels.
 The data returned by \texttt{mxNiDepth()} is takes the form of a matrix of distance values, measured in millimeters.
 
-\section{Navigation Mode}
-As mentioned, the main focus of the Navigational of the system is to allow a user to walk around a room and avoid obstacles. Several prototype systems have been developed, each using different techniques to convey different data to the user.
-
-\subsection{Central Distance}
-\label{sec:centraldistance}
-\subsubsection{Description}
-It is possible to read the distance to the center of the image with the following code:
-
-\begin{minted}{matlab}
-    handles = mxNiCreateContext();
-    rgb = mxNiPhoto(handles);
-    rgb = permute(rgb, [3 2 1]);
-    depth = mxNiDepth(handles);
-    depth = permute(depth, [2 1]);
-    
-    centralDistance = depth(size(depth, 1), size(depth, 2));
-\end{minted}
-
-
-Building on this basic idea, a way of conveying this distance was developed. By synthesising a sine-wave with a varying frequency (from low to high) according to distance to the central point, and playing it back in real-time, a user could get a live idea of the distance to the object directly in front of them. As the minimum depth supported by the Xtion is around 550mm, and the maximum is around 4m (4000mm), a direct mapping from distance (in millimeters) to frequency (in Hertz) was used - these frequencies are well within the audible range of the human ear~\cite{hearingrange}.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.6\textwidth]{Navigation/single-tone.png}
-\caption{Variable-frequency distance system. The red dot marks the center of the depth map}
-\end{figure}
-
-This required the development of the tone-generation Java class detailed in \ref{sec:tonegen}, and the source-code for this prototype can be found in the file centralTone.m.
-
-\subsubsection{System Performance}
-As the algorithm is quite straight-forward, the software implementing it was not excessively CPU intensive. Measuring the performance of the script gave estimates that it performed at roughly 30Hz --- this limitation was probably due to the overhead of displaying the image of the depth map using \texttt{imshow()}, which was only being done for development purposes.
-
-\subsubsection{Effectiveness}
-The system was tested by walking around a room blindfolded, using only the camera to avoid obstacles. The test was a success --- the mapping from frequency to distance was quite intuitive, and there were no ``crashes'', in terms of both software and the physical sense.
-
-However, I felt that the amount of information being sent to the user of the system could be improved. Given the range of possible frequencies (550-4000), the pitch resolution of the human auditory system (said to be around 1Hz~\cite{pitchres}), and the processing rate of the video feed, it is possible to get an approximation of the bitrate of the system:
-
-\begin{equation}
-\log _2\left({depth}_{max} - {depth}_{min}\right) \times 30 \approx 350 \mbox{bits/sec}
-\end{equation}
-
-\subsection{Central Distance with Size}
-\subsubsection{Description}
-Using the 350 bits/sec figure obtained from the entropy calculations in section \ref{sec:centraldistance} as the base-line to be improved upon, it was decided that additional information could be conveyed.
-
-It was determined experimentally that knowing the size of the object in-front of the user was relevant --- with this information, the user knows by how much their will need to alter their trajectory to avoid hitting the object. 
-
-It is possible to calculate the physical width and height of the field-of-view using the following formulae:
-
-\begin{equation}
-{FOV}_{width} = 2 \times d \times \tan\frac{58\degree}{2}
-\end{equation}
-\begin{equation}
-{FOV}_{height} = 2 \times d \times \tan\frac{45\degree}{2}
-\end{equation}
-
-Where 58\degree  and 45\degree  are the horizontal and vertical \ac{FOV} of the Xtion camera respectively~\cite{xtion-spec}. 
-
-This information alone is no more useful to for navigational purposes than the distance to central point - however, by extracting the object at the center of the image, and determining how much of the \ac{FOV} it occupies, it is possible to calculate the area of the object.
-
-Using the Magic Wand extraction technique described in section \ref{sec:magicwand}, the central object was extracted as a binary image, where pixels marked 1 indicated that they were part of the object, and pixels marked 0 indicated that they were not. 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{Navigation/cup.png}
-    \caption{Extracted object as a binary image}
-\end{figure}
-
-An indicator of the real-terms size of the object was calculated using the following formula:
-
-\begin{equation}
-    \mbox{Object Area} = \frac{\sum\limits_x\sum\limits_y \mbox{binaryImage}({x}, {y})}{\mbox{ImageArea}} ({\mbox{FOV}}_{\mbox{width}} \times {\mbox{FOV}}_{\mbox{height}})
-\end{equation}
-
-The amplitude of the sine-wave being generated according to the specification in section \ref{sec:centraldistance} was then varied according to the area calculated using the above formula.
-
-\subsubsection{System Performance}
-
-The overhead of having to extract the object from the center of the image reduced the frame processing rate to roughly 14Hz, however this slowdown was barely noticable when using the system
-
-\subsubsection{Effectiveness}
-It was proven experimentally that by varying the amplitude of the sound-wave according to the object area, and varying the sound-wave frequency according to the method described in section \ref{sec:centraldistance}, a user could infer both the size of, and the distance to an object. 
-
-
-\subsection{Multi-point distance}
-Building on the method developed in section \ref{sec:centraldistance}, a system able to communicate distance to multiple points simultaneously was also designed.
-
-Rather than simply conveying the distance to the central point in the image, a grid of points was used.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Navigation/multi-tone.png}
-    \caption{Multi-point grid}
-\end{figure}
-
-The left column of points was assigned the left stereo channel, the right column was assigned the right stereo channel, with the center column being assigned both stereo channels. 
 
 \section{Shared Components}
 \label{sec:sharedcomponents}
+Certain components are shared between both Navigation Mode and Detail Mode.
 \subsection{Magic Wand}
 \label{sec:magicwand}
 For cases where the object of interest is at a known location in the image, a magic-wand style approach was used for object extraction. 
 
-Searching the Matlab file exchange, a module able to perform magic wand extraction was found\~cite{magicwandmatlab}. The module provides a function, \texttt{magicwand(im, ylist, xlist, tolerance)} that for a given image, set of {x,y} co-ordinates, and a tolerance, creates a mask using the flood-fill algorithm described in section \ref{sec:floodfill}.
+Searching the Matlab file exchange, a module able to perform magic wand extraction was found~\cite{magicwandmatlab}. The module provides a function, \texttt{magicwand(im, ylist, xlist, tolerance)} that for a given image, set of {x,y} co-ordinates, and a tolerance, creates a mask using the flood-fill algorithm described in section \ref{sec:floodfill}.
 
 \subsection{Tone Generation}
+\label{sec:tonegen}
 Although Matlab is more than capable of generating and playing back a sine wave, it is not possible to do so while simultaneously performing another task, as it is not possible to write threaded software using normal Matlab syntax. Due to the real-time nature of the system, it was necessary to be able to play back a sine-wave while simultaneously processing video.
 
 In on order to accomplish this, a Java class was developed. This class exposes methods for setting tone frequency, setting tone amplitude and setting pulse duration - internally, a worked tone-generation thread is created. Using this class, it is possible to play back a tone in a non-blocking way. 
@@ -193,25 +100,9 @@ while(true){
     }
     i++;
 }
-    
 \end{minted}
 
 Support for pulsing the tone was also implemented. 
-
-
-\section{Detail Mode}
-The development of Detail mode was a much more complicated task than the development of Navigation Mode.
-
-The general process can be split into 4 steps:
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Detail/steps.png}
-    \caption{Main components of detail mode}
-\end{figure}
-
-The capture step is fairly straightforward --- data is read in to Matlab using the Xtion Camera and OpenNI wrapper. Segmentation is the process of extracting relevant shapes from the input image, property extraction is the process of describing the shape in terms of different co-efficients or descriptors, and sonification is the process of conveying those descriptors using audio. 
-
 
 \subsection{Image Segmentation}
 Although the primary deliverable of the project was not to invent a new image segmentation algorithm, the method of image segmentation was an important choice.
@@ -289,6 +180,121 @@ As mentioned, most segmentation algorithms support only RGB data. With this in m
 \subsubsection{Graph Cuts}
 Attempts were made to use the Graph Cuts algorithm [REF] in order to segment the video and depth data. However, it became apparent that this approach was taking orders of magnitude longer than we could reasonably spend processing each frame; we wanted the system to run as close to real-time as possible.
 
+
+
+
+
+\section{Navigation Mode}
+\label{sec:nav}
+As mentioned, the main focus of the Navigational of the system is to allow a user to walk around a room and avoid obstacles. Several prototype systems have been developed, each using different techniques to convey different data to the user.
+
+\subsection{Central Distance}
+\label{sec:centraldistance}
+\subsubsection{Description}
+It is possible to read the distance to the center of the image with the following code:
+
+\begin{minted}{matlab}
+    handles = mxNiCreateContext();
+    rgb = mxNiPhoto(handles);
+    rgb = permute(rgb, [3 2 1]);
+    depth = mxNiDepth(handles);
+    depth = permute(depth, [2 1]);
+    
+    centralDistance = depth(size(depth, 2)/2, size(depth, 1)/2);
+\end{minted}
+
+
+Building on this basic idea, a way of conveying this distance was developed. By synthesising a sine-wave with a varying frequency (from low to high) according to distance to the central point, and playing it back in real-time, a user could get a live idea of the distance to the object directly in front of them. As the minimum depth supported by the Xtion is around 550mm, and the maximum is around 4m (4000mm), a direct mapping from distance (in millimeters) to frequency (in Hertz) was used - these frequencies are well within the audible range of the human ear~\cite{hearingrange}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{Navigation/single-tone.png}
+\caption{Variable-frequency distance system. The red dot marks the center of the depth map}
+\end{figure}
+
+This required the development of the tone-generation Java class detailed in \ref{sec:tonegen}, and the source-code for this prototype can be found in the file \texttt{centralTone.m}.
+
+\subsubsection{System Performance}
+As the algorithm is quite straight-forward, the software implementing it was not excessively CPU intensive. Measuring the performance of the script gave estimates that it performed at roughly 30Hz --- this limitation was probably due to the overhead of displaying the image of the depth map using \texttt{imshow()}, which was only being done for development purposes.
+
+\subsubsection{Effectiveness}
+The system was tested by walking around a room blindfolded, using only the camera to avoid obstacles. The test was a success --- the mapping from frequency to distance was quite intuitive, and there were no ``crashes'', in terms of both software and the physical sense.
+
+However, I felt that the amount of information being sent to the user of the system could be improved. Given the range of possible frequencies (550-4000), the pitch resolution of the human auditory system (said to be around 1Hz~\cite{pitchres}), and the processing rate of the video feed, it is possible to get an approximation of the bitrate of the system:
+
+\begin{equation}
+\log _2\left({depth}_{max} - {depth}_{min}\right) \times 30 \approx 350 \mbox{bits/sec}
+\end{equation}
+
+\subsection{Central Distance with Size}
+\subsubsection{Description}
+Using the 350 bits/sec figure obtained from the entropy calculations in section \ref{sec:centraldistance} as the base-line to be improved upon, it was decided that additional information could be conveyed.
+
+It was determined experimentally that knowing the size of the object in-front of the user was relevant --- with this information, the user knows by how much their will need to alter their trajectory to avoid hitting the object. 
+
+It is possible to calculate the physical width and height of the field-of-view using the following formulae:
+
+\begin{equation}
+{FOV}_{width} = 2 \times d \times \tan\frac{58\degree}{2}
+\end{equation}
+\begin{equation}
+{FOV}_{height} = 2 \times d \times \tan\frac{45\degree}{2}
+\end{equation}
+
+Where 58\degree  and 45\degree  are the horizontal and vertical \ac{FOV} of the Xtion camera respectively~\cite{xtion-spec}. 
+
+This information alone is no more useful to for navigational purposes than the distance to central point - however, by extracting the object at the center of the image, and determining how much of the \ac{FOV} it occupies, it is possible to calculate the area of the object.
+
+Using the Magic Wand extraction technique described in section \ref{sec:magicwand}, the central object was extracted as a binary image, where pixels marked 1 indicated that they were part of the object, and pixels marked 0 indicated that they were not. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Navigation/cup.png}
+    \caption{Extracted object as a binary image}
+\end{figure}
+
+An indicator of the real-terms size of the object was calculated using the following formula:
+
+\begin{equation}
+    \mbox{Object Area} = \frac{\sum\limits_x\sum\limits_y \mbox{binaryImage}({x}, {y})}{\mbox{ImageArea}} ({\mbox{FOV}}_{\mbox{width}} \times {\mbox{FOV}}_{\mbox{height}})
+\end{equation}
+
+The amplitude of the sine-wave being generated according to the specification in section \ref{sec:centraldistance} was then varied according to the area calculated using the above formula.
+
+\subsubsection{System Performance}
+
+The overhead of having to extract the object from the center of the image reduced the frame processing rate to roughly 14Hz, however this slowdown was barely noticable when using the system
+
+\subsubsection{Effectiveness}
+It was proven experimentally that by varying the amplitude of the sound-wave according to the object area, and varying the sound-wave frequency according to the method described in section \ref{sec:centraldistance}, a user could infer both the size of, and the distance to an object. 
+
+
+\subsection{Multi-point distance}
+Building on the method developed in section \ref{sec:centraldistance}, a system able to communicate distance to multiple points simultaneously was also designed.
+
+Rather than simply conveying the distance to the central point in the image, a grid of points was used.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Navigation/multi-tone.png}
+    \caption{Multi-point grid}
+\end{figure}
+
+The left column of points was assigned the left stereo channel, the right column was assigned the right stereo channel, with the center column being assigned both stereo channels. 
+
+\section{Detail Mode}
+\label{sec:detail}
+The development of Detail mode was a much more complicated task than the development of Navigation Mode.
+
+The general process can be split into 4 steps:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Detail/steps.png}
+    \caption{Main components of detail mode}
+\end{figure}
+
+The capture step is fairly straightforward --- data is read in to Matlab using the Xtion Camera and OpenNI wrapper. Segmentation is the process of extracting relevant shapes from the input image, property extraction is the process of describing the shape in terms of different co-efficients or descriptors, and sonification is the process of conveying those descriptors using audio. 
+
 \subsection{Conveying Shape Properties}
 Two main ways of conveying details about a given shape were considered.
 
@@ -301,6 +307,7 @@ For instance, consider a method of describing shapes, consisting of 5 parameters
 This section of the report details the effectiveness of various methods of conveying different shape properties, using both ``direct encoding'' and basis shape methods.
 
 \subsubsection{Hu Invariant Moments --- Basis Shapes}
+\label{sec:hubs}
 As discussed in section \ref{sec:hu}, Hu's Invariant Moments are seven specific central moments, invariant to rotation, scale and translation.
 
 A method of classifying shapes based on their Hu Invariant Moments was developed. By calculating the invariant moments for a set of basis shapes (in this instance, a circle, square, star and triangle), then calculating the invariant moments for our segmented input shape, and finally measuring the euclidian distance between the moment vector for each basis shape and our segmented shape, it is possible to determine the similarity between the input shape and out basis shapes.
@@ -381,8 +388,43 @@ By assigning a harmonic to each of the Zernike moments, and varying the amplitud
 
 Although the tone varied with each shape, it was not possible to identify individual shapes using this system --- it was unclear how a change in the amplitude of a particular harmonic corresponded to changes in shape.
 
-\subsubsection{Zernike Moments - Basis Shapes}
-Using the concept of ``basis shapes'' resulted in more usable results. By training the system using a circle, a square, a star, a rectangle, and a triangle, the following results were obtained:
+\subsubsection{Elliptic Fourier Transform - Basis Shapes}
+\label{sec:eftbs}
+Another approach was to use the Elliptic Fourier Transform (as described in section \ref{sec:eft}) in order to describe the input shape.
 
-\subsubsection{Elliptic Fourier Transform - Direct Encoding}
+Rather than using the approach used with Hu Invariant Moments of computing the Euclidean distance between the basis shapes and the input shape, an alternative approach was experimented with.
 
+It was shown that the shape resulting from interpolation between two input shapes was natural - i.e. the intermediate shape between a circle and triangle was partially circular, and partially triangular:
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Detail/interpolate-circle-1.eps}
+        \caption{100\% circle, 0\%triangle, 100 harmonics}
+\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Detail/interpolate-circle-2.eps}
+    \caption{50\% circle, 50\%triangle, 100 harmonics}
+    \label{fig:intermediate}
+\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Detail/interpolate-circle-3.eps}
+    \caption{0\% circle, 100\%triangle, 100 harmonics}
+\end{subfigure}
+\caption{Interpolation between circle and triangle}
+\end{figure}
+
+The graphs in the above figures show a measure of similarity (based on Euclidean distance) of the input shape to the basis shapes. You can see from subfigure \ref{fig:intermediate} that the intermediate shape is correctly measured as pre-dominantly consisting of a mix of triangle and circle.
+
+Exploiting this fact allows us to use the \ac{EFT} descriptors from the basis shapes within a system of linear equations - i.e.:
+
+\begin{equation}
+    \mathrm{input} = a\cdot \mathrm{descriptor}_\mathrm{circle} + b\cdot \mathrm{descriptor}_\mathrm{triangle} + c\cdot \mathrm{descriptor}_\mathrm{square} + d\cdot \mathrm{descriptor}_\mathrm{star}
+\end{equation}
+
+where $a$, $b$, $c$ and $d$ are the proportions of circle, triangle, square and star shapes respectively. 
+
+This can be solved in Matlab using the \texttt{mldivide} method, or the \texttt{\textbackslash} operator. Due to a lack of time, this experiment remained unconcluded, however is something that could be addressed in future work.

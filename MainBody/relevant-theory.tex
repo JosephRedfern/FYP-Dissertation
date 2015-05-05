@@ -1,5 +1,5 @@
 \section{Stereopsis}
-Stereopsis, translating literally to ``Solid Appearance'', is the ability to perceive depth. For people with two functioning eyes, this is done sub-consciously by the brain, by observing the differences between the image received by each eye.
+Stereopsis, translating literally to ``Solid Appearance'', is the ability to recover depth from one or more image(s). For people with two functioning eyes, this is done sub-consciously by the brain, by observing the differences between the image received by each eye.
 
 Being aware of the depth information in a scene has multiple advantages in the context of this project.
 
@@ -30,7 +30,7 @@ This sensor was developed by a company called Primesense, and is quite well supp
 Use of structured light is not the old technique that has been developed to acquire depth-maps - other methods exist, for instance, Time-of-Flight and Stereoscopic systems. The Asus Xtion was chosen over other devices, as it is fairly in-expensive (\~£100), and can be powered by USB alone (other devices, such as the Microsoft Kinect, require mains power to operate). 
 
 \section{Image Segmentation}
-There are many different techniques for segmenting images in Computer Vision --- however, there is no ``one size fits all'' solution, each method has pros and cons. 
+As seen later in this report, this project relies on knowing object boundaries through Image Segmentation. There are many different techniques for segmenting images in Computer Vision --- however, there is no ``one size fits all'' solution, each method has pros and cons. 
 \label{sec:segment}
 
 This section aims to describe some different methods, along with explanations as to why they are/are not relevant to this project.
@@ -43,6 +43,13 @@ There are several specific implementations, although they can be generalised int
 f: \left\{{0,1,2,...,255}\right\} \rightarrow [0, 1]
 \end{equation}
 
+such that
+
+$f(0\cdots T] \rightarrow 0$
+
+$f(T\cdots 255) \rightarrow 1$
+
+where $T$ is the chosen threshold.
 \subsubsection{Example}
 Consider this image:
 
@@ -82,6 +89,7 @@ A recursive flood-fill algorithm can be described as follows. Neighbouring pixel
         \includegraphics[width=\textwidth]{Theory/lena-dot-thresh.png}
         \caption{After extraction with tolerance=100}
     \end{subfigure}
+    \caption{Example of flood-fill}
 \end{figure}
 
 This method can work well if the location of the initial seed pixel is known, however, is not so useful if the starting point is unknown.
@@ -114,6 +122,7 @@ The following is an example of the result of K-means clustering with $K = 3$, wi
 \end{figure}
 
 \section{Elliptic Fourier Descriptors}
+\label{sec:eft}
 Elliptic Fourier Descriptors are the result of performing an \ac{EFT}, and can be used to describe the shape of a contour~\cite{kuhl1982elliptic}.
 
 Before computing the EFD of an image, its contour needs to be extracted. This can be be done by segmenting the image (using a technique described in \ref{sec:segment}), then finding the outermost contour of the segment. This can be done using one of many possible contour tracing techniques, such as Moore Neighbourhood Tracing.

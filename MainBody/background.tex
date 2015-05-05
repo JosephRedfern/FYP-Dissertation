@@ -1,40 +1,36 @@
 \section{Problem Context}
 \subsection{UK Statistics}
-In the UK alone, around 2,000,000 people live with sight loss --- around 360,000 of which are registered with their local authority as being blind or visually impaired, who have severe and irreversible sight loss~\cite{uk-blind}.  Of these 360,000 people, there are only 17,000 white cane-users, and less than 4,800~\cite{guidedog-count} guide-dog owners. Assuming no overlap between guide dog users and white cane users, this leaves almost 94\% without access to the two major forms of assistance available to the blind.
+In the UK alone, around 2,000,000 people live with sight loss --- around 360,000 of which are registered with their local authority as being blind or visually impaired, who have severe and irreversible sight loss~\cite{uk-blind}.  Of these 360,000 people, there are only 17,000 white cane-users, and less than 4,800~\cite{guidedog-count} guide-dog owners. Assuming no overlap between guide dog users and white cane users, this leaves almost 94\% without access to the two major forms of assistance available to the blind. It has been estimated that the economic cost of blindness to the UK alone be in the region of \pounds22 billion~\cite{blindcost}.
 
-A possible factor that could explain the relatively small adoption of Guide Dogs is their cost --- as mentioned in section \ref{chap:introduction}, the life-time cost of a guide dog is around \pounds50,000. Although the dog is paid for in it's entirety by the Guide Dogs for the Blind association, they themselves are a charity and do not receive government funding. A system whereby the visually impaired could purchase a guide-dog would likely not be effective, as 66\% of the registered blind/partially sighted are not in paid employment~\cite{afbff} so would be unlikely to be able to afford the cost.
+A possible factor that could explain the relatively small adoption of Guide Dogs is their cost --- as mentioned in section \ref{chap:introduction}, the life-time cost of a guide dog is around \pounds50,000. Although the dog is paid for in its entirety by the Guide Dogs for the Blind association, they themselves are a charity and do not receive government funding. A system whereby the visually impaired could purchase a guide-dog would likely not be effective, as 66\% of the registered blind/partially sighted are not in paid employment~\cite{afbff} so would be unlikely to be able to afford the cost.
 
 \subsection{Developing Countries}
 The situation in less developed countries than the UK is far worse. According to the Himalayan Cataract Project~\cite{worldblindness}, ``blindness is most prevalent in developing countries where malnutrition, inadequate health and education services, poor water quality and a lack of sanitation leads to a high incidence of eye disease''. If these countries are so impoverished that they are unable to afford services that are considered basic human rights in the developed world, it is unlikely that they will be able to afford to spend \pounds50,000 per person on guide dogs. 
 
-Although white canes are a cheaper, they are not without their downsides. They have limited range - typically a few feet in-front of the user. This makes finding doorways etc a more difficult task than when using a guide-dog.
+Although white canes are a cheaper, they are not without their downsides. They have limited range --- typically a few feet in-front of the user. This makes finding doorways etc a more difficult task than when using a guide-dog.
 
 \section{The Problem}
-This project aims to address the lack of a cheap, intuitive way of enhancing the mobility of the visually impaired.
-
-It is non-trivial to convey visual information in the form of audio, for a number of reasons.
+This project aims to address the lack of a cheap, intuitive way of enhancing the mobility of the visually impaired. It is non-trivial to convey visual information in the form of audio, for a number of reasons.
 
 \subsection{Compression}
 \label{sec:compression}
-Measuring the bit-rate of sensory systems is not an easy task --- however, research has been done into the informational capacity of both the human visual system, and human auditory system.
+Measuring the bit-rate of sensory systems is not an easy task~--- however, research has been done into the informational capacity of both the human visual system, and human auditory system.
 
 Evidence makes it clear that the human visual system has a higher bit-rate than the human auditory system. Estimates by H. Jacobson~\cite{jacobson1950informational} suggest the informational capacity for the human ear to be roughly $8\times10^3$ bits/sec. In a separate paper~\cite{jacobson1951informational} Jacobson also estimates the informational capacity of the human eye to be around $4.3\times10^6$ bits/sec --- roughly $\times500$ higher. 
 
 Taking this into consideration, it is clear that a working solution to the problem that this project aims to solve will involve compression of the visual information. 
 
 \subsection{Neuroplasticity}
-Neuroplasticity is a term used to describe the ability of the brain to adapt to change. The brain is able to ``re-wire'' itself in response to changes to input, environment and emotions --- however, this process takes time, and deteriorates with age\cite{park2013aging}. Some existing solutions (see section \ref{sec:existing})
+Neuroplasticity is a term used to describe the ability of the brain to adapt to change. The brain is able to ``re-wire'' itself in response to changes to input, environment and emotions --- however, this process takes time, and deteriorates with age~\cite{park2013aging}. Many of the existing solutions detailed in this section of report rely on this neuroplasticity~\cite{striem2013neuroplasticity}.
 
-\ac{WHO} figures state that of the 39 million blind on planet, 82\% of those are aged 50 and above,
-
-With this in mind, an inclusive, wide-reaching system should be as intuitive and natural as possible, and should not be too heavily reliant on neuroplasticity.
+\ac{WHO} figures state that of the 39 million blind on planet, 82\% of those are aged 50 and above. With this in mind, an inclusive, wide-reaching system should be as intuitive and natural as possible, and should not be too heavily reliant on neuroplasticity.
 
 \section{Existing Solutions}
-\label{sec:exisiting}
+\label{sec:existing}
 Several attempts to solve the problem of video to audio conversion have been made in the past.
 
 \subsection{vOICe}
-The technique described as "An Experimental System for Auditory Image Representations"~\cite{vOICe} sonifies an object/scene by producing a 1:1 mapping from image to audio. This is accomplished by generating a sound, such that a visualisation of the frequency spectrum of the sound produces the input image. This technique has been used by the artist Aphex Twin in the song $\Delta M_i^{-1} = - \alpha \sum_{n=1}^N D_i \left[ n \right] \left[ \sum_{j \in C \left[ i \right]}^{} F_{ji} \left[ n -1 \right] + Fext_i \left[ n^{-1} \right] \right]$~\cite{aphex-equation} (more commonly known as [equation]), where viewing the song in a spectrogram produces a picture of the artists face:
+The technique described as ``An Experimental System for Auditory Image Representations''~\cite{vOICe} sonifies an object/scene by producing a 1:1 mapping from image to audio. This is accomplished by generating a sound, such that a visualisation of the frequency spectrum of the sound produces the input image. This technique has been used by the artist Aphex Twin in the song $\Delta M_i^{-1} = - \alpha \sum_{n=1}^N D_i \left[ n \right] \left[ \sum_{j \in C \left[ i \right]}^{} F_{ji} \left[ n -1 \right] + Fext_i \left[ n^{-1} \right] \right]$~\cite{aphex-equation} (more commonly known as [equation]), where viewing the song in a spectrogram produces a picture of the artists face:
 
 \begin{figure}[H]
     \centering
@@ -42,7 +38,20 @@ The technique described as "An Experimental System for Auditory Image Representa
     \caption{Spectrogram of $\Delta M_i^{-1} = - \alpha \sum_{n=1}^N D_i \left[ n \right] \left[ \sum_{j \in C \left[ i \right]}^{} F_{ji} \left[ n -1 \right] + Fext_i \left[ n^{-1} \right] \right]$~\cite{aphex-equation}}
 \end{figure}
 
-While this approach can theoretically convey all of the information held within the image, in practice, it is not feasible as a human visual aid. This method would require a human to perform a \ac{FFT} of the signal and re-construct the image in their head, and assumes that the auditory system has a sufficiently high bit-rate to receive all of the information, making the system unworkable --- little compression is performed. 
+While this approach can theoretically convey all of the information held within the image, in practice, it is not feasible as a human visual aid. This method would require a human to perform a \ac{FFT} of the signal and re-construct the image in their head, and assumes that the auditory system has a sufficiently high bit-rate to receive all of the information, making the system unworkable --- little compression is performed. Additionally, the data is conveyed to the user in a column-by-column, time-multiplexed fashion, resulting in low temporal resolution.
+
+\subsection{EyeMusic}
+EyeMusic~\cite{abboud2014eyemusic} is fundamentally the same as vOICe, but with a different choice of sounds (instruments rather than sine waves), and additional image segmentation. It works by clustering the input image into red, green, white, blue and yellow components. Each colour is then assigned an instrument --- red is mapped to a reggae organ, green to a ``rapmans reed'' (a synthesised reeded instrument), white to a choir, blue to brass instruments and yellow to stringed instruments.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Background/eyemusic.png}
+    \caption{EyeMusic iOS Application}
+\end{figure}
+
+The resulting image is then scanned column-by-column, from left to right. A sound is then generated, with instrument varying according to pixel colour, pitch varying according to pixel position on the Y-axis, and volume according to the pixel luminance. The resulting sound is then played back for 50ms (by default), before moving on to the next column. 
+
+
 
 \subsection{Virtual Acoustic Space}
 \label{sec:vas}
@@ -69,22 +78,11 @@ The system described uses the \ac{HRTF} technique to apply filters to a tone. \a
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{Background/thevibe.png}
+    \includegraphics[width=\textwidth]{Background/thevibe.png}
     \caption{Visualisation of point spacing in TheVIBE}
 \end{figure}
 
 This paper describes a technique whereby points are assigned to ``receptive fields''. Each field has a static position, and is assigned loudness, determined by the Z-axis position of the points within the field. Unlike the method discussed in section \ref{sec:vas}, TheVIBE does not use a full \ac{HRTF} to convey field position; rather, it uses an inter-aural loudness difference (similar to stereo panning) to describe horizontal position, and tone frequency variation to describe vertical position.
-
-\subsection{EyeMusic}
-EyeMusic~\cite{abboud2014eyemusic} works by clustering the input image into red, green, white, blue and yellow components. Each colour is then assigned an instrument - red is mapped to a reggae organ, green to a ``rapmans reed'' (a synthesised reeded instrument), white to a choir, blue to brass instruments and yellow to stringed instruments.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.4\textwidth]{Background/eyemusic.png}
-    \caption{EyeMusic iOS Application}
-\end{figure}
-
-The resulting image is then scanned column-by-column, from left to right. A sound is then generated, with instrument varying according to pixel colour, pitch varying according to pixel position on the Y-axis, and volume according to the pixel luminance. The resulting sound is then played back for 50ms (by default), before moving on to the next column. 
 
 \subsection{PSVA}
 \ac{PSVA}~\cite{412057} works by dividing an input image (in this case, from a camera mounted on the users head) into a grid and assigning a frequency to each pixel, according to the formula:
@@ -95,6 +93,8 @@ The resulting image is then scanned column-by-column, from left to right. A soun
 
 where $f_{c}$ is a central frequency, around which pixel frequencies are based, and $n$ is the pixel number. 
 
+Additionally, edge detection is performed (through Laplacian of Gaussian) in order to more effectively mimic the processing normally done by the human visual system.
+
 The phase of the sound being generated by each pixel depends on it's horizontal position, with the amplitude of the sound depending on the grey-level intensity of the pixel. The tones are then played back simultaneously (having been generated by an inverse Fourier transformation) and in real-time --- the system was prototyped on an \ac{FPGA}, presumably due to the limited speed of normal processors at the time of the paper's publication (1993). 
 
 With this system, the varying sensitivity of the human eye is accounted for by increasing the size of the pixels at the periphery of the image, resulting in an increased central resolution.
@@ -102,4 +102,4 @@ With this system, the varying sensitivity of the human eye is accounted for by i
 \subsection{Summary of disadvantages of existing solutions}
 The existing solutions to the problem of video to audio conversion all suffer from a similar problem --- information overload, and training time (due in part to neuroplasticity).
 
-NOTE: ELABORATE ON THE ABOVE.
+With the exception of PSVA, these solutions are also afflicted with a low temporal resolution, due to the time-multiplexing mode of operation. There is also little prioritisation of information being conveyed to the user, beyond varying the size of the receptive field being performed with PSVA.
