@@ -20,7 +20,7 @@ Using the change in eccentricity for each point, the device is able to construct
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.3\textwidth]{Theory/kinect_ir_pattern.jpg}
+\includegraphics[width=0.6\textwidth]{Theory/kinect_ir_pattern.jpg}
 \caption{IR Pattern from Kinect Device~\cite{primesense-irstream}}
 \end{figure}
 
@@ -54,7 +54,7 @@ Consider this image:
 
 The histogram of this greyscale image is as follows:
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{Theory/lena-grey-hist.png}
     \caption{Histogram of Lena Image}
@@ -70,7 +70,7 @@ The flood fill algorithm is used to select an area of an image, based on an init
 
 A recursive flood-fill algorithm can be described as follows. Neighbouring pixels to the initial seed pixels are examined --- if the difference between the initial seed pixel and the neighbour pixel is less than the given threshold value, then the neighbour pixel is marked as being part of the seed pixel. The algorithm the repeats on all similar neighbouring pixels, always comparing pixels to the \textbf{initial} seed pixel.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
@@ -124,13 +124,47 @@ The first step of the Elliptic Fourier Transform is to compute the chain code of
 Chain codes are used to losslesly encode a monochrome image --- they describe the connectivity of a list of points, relative to each point.
 
 \section{Image Moments}
-Formally, the moment of an image can be defined as:
+Formally, the moment of an image can be defined as\cite{liao1996image}:
 
 \begin{equation}
 M_{ij} = \sum_x \sum_y x^i y^j I(x,y)\,\!
 \end{equation}
 
+That is, the sum of pixel intensities, waited according to the $x$ and $y$ co-ordinates of each pixel co-ordinate raised to parameters $i$ and $j$ respectively.
 
-\subsection{Zernike Moments}
+Certain properties of images can be established by using particular $i$ and $j$ values during moment calculation - for instance for a Binary Image, area can be given by: $M_{00}$, and image centroid can be given by ${x, y} = M_{10}/M_{00}, M_{01}/M_{00}$.
+
+
+\subsection{Hu Invariant Moments}
+\label{sec:hu}
+Hu's Invariant Moments~\cite{hu1962visual} are a set of 7 image moments:
+
+$I_1 = \eta_{20} + \eta_{02}$
+
+$I_2 = (\eta_{20} - \eta_{02})^2 + 4\eta_{11}^2$
+
+$I_3 = (\eta_{30} - 3\eta_{12})^2 + (3\eta_{21} - \eta_{03})^2$
+
+$I_4 = (\eta_{30} + \eta_{12})^2 + (\eta_{21} + \eta_{03})^2$
+
+$I_5 = (\eta_{30} - 3\eta_{12}) (\eta_{30} + \eta_{12})[ (\eta_{30} + \eta_{12})^2 - 3 (\eta_{21} + \eta_{03})^2] + (3 \eta_{21} - \eta_{03}) (\eta_{21} + \eta_{03})[ 3(\eta_{30} + \eta_{12})^2 -  (\eta_{21} + \eta_{03})^2]$
+
+$I_6 =  (\eta_{20} - \eta_{02})[(\eta_{30} + \eta_{12})^2 - (\eta_{21} + \eta_{03})^2] + 4\eta_{11}(\eta_{30} + \eta_{12})(\eta_{21} + \eta_{03})$
+
+$I_7 = (3 \eta_{21} - \eta_{03})(\eta_{30} + \eta_{12})[(\eta_{30} + \eta_{12})^2 - 3(\eta_{21} + \eta_{03})^2] - (\eta_{30} - 3\eta_{12})(\eta_{21} + \eta_{03})[3(\eta_{30} + \eta_{12})^2 - (\eta_{21} + \eta_{03})^2]$
+
+where $\eta_{ij}$ is the scale-invariant moment given by:
+
+$\eta_{ij} = \frac{\mu_{ij}} {\mu_{00}^{\left(1 + \frac{i+j}{2}\right)}}\,\!$
+
+and $\mu_{ij}$ is the central moment, given by:
+
+$\mu_{ij} = \sum_{x} \sum_{y} (x - \bar{x})^i(y - \bar{y})^j f(x,y)$
+
+As the name name suggests, values resulting from calculating $I_{1..7}$ are invariant to scale, rotation and translation --- that is, they remain constant no matter their size, their location or angle they are at. 
+
+\subsection{Zernike Moment Descriptors}
 \label{sec:zernike}
-Zernike Moments are a set of image moments with specific $i$ and $j$ parameters. They are orthogonal --- i.e. there is no redundancy between each parameter, which make them very efficient descriptors.
+Zernike Moments are not dissimilar to normal image moments, however are calculated differently --- they are based on Complex Zernike Polynomials~\cite{liao1997image}.
+
+Zernike Moments are orthogonal --- that is, each Zernike moment is statically independent from another, meaning there is little redundancy~\cite{amayeh2005accurate}. This means that using Zernike Moments is an efficient way of parameterizing an image.

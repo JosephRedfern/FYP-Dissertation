@@ -44,7 +44,7 @@ Once compiled, the wrapper provides the following functions: \texttt{mxNiCreateC
 
 Combining these methods, a basic Matlab program to acquire and display the RGB and Depth data from the camera as follows: 
 
-\begin{lstlisting}[caption = {Acquiring Depth and RGB in Matlab}]
+\begin{minted}{matlab}
     handles = mxNiCreateContext();
     rgb = mxNiPhoto(handles);
     rgb = permute(rgb, [3 2 1]);
@@ -57,7 +57,7 @@ Combining these methods, a basic Matlab program to acquire and display the RGB a
     subplot(1, 2, 2);
     imshow(depth);
     colormap(jet);
-\end{lstlisting}
+\end{minted}
 
 The calls to \texttt{permute()} are necessary as the OpenNI wrapper returns the data in the opposite order to what Matlab expects.
 
@@ -154,7 +154,7 @@ Building on the method developed in section \ref{sec:centraldistance}, a system 
 
 Rather than simply conveying the distance to the central point in the image, a grid of points was used.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{Navigation/multi-tone.png}
     \caption{Multi-point grid}
@@ -198,8 +198,20 @@ while(true){
 
 Support for pulsing the tone was also implemented. 
 
+
 \section{Detail Mode}
 The development of Detail mode was a much more complicated task than the development of Navigation Mode.
+
+The general process can be split into 4 steps:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Detail/steps.png}
+    \caption{Main components of detail mode}
+\end{figure}
+
+The capture step is fairly straightforward --- data is read in to Matlab using the Xtion Camera and OpenNI wrapper. Segmentation is the process of extracting relevant shapes from the input image, property extraction is the process of describing the shape in terms of different co-efficients or descriptors, and sonification is the process of conveying those descriptors using audio. 
+
 
 \subsection{Image Segmentation}
 Although the primary deliverable of the project was not to invent a new image segmentation algorithm, the method of image segmentation was an important choice.
@@ -280,7 +292,7 @@ Attempts were made to use the Graph Cuts algorithm [REF] in order to segment the
 \subsection{Conveying Shape Properties}
 Two main ways of conveying details about a given shape were considered.
 
-The first, and perhaps most obvious method was to encode and transmit various shape descriptors directly. For instance, the amplitude of a tone of a particular frequency could convey the area of the shape, with a different frequency being used for number of corners, etc etc. This method relies on the shape descriptors being intuitively linked to physical properties of the shape.
+The first, and perhaps most obvious method was to encode and transmit various shape descriptors directly. For instance, the amplitude of a tone of a particular frequency could convey the area of the shape, with a different frequency being used for number of corners, etc. This method relies on the shape descriptors being intuitively linked to physical properties of the shape.
 
 The second possible method was to transmit details of a shape in terms of similarity to other ``basis'' shapes.
 
@@ -288,8 +300,63 @@ For instance, consider a method of describing shapes, consisting of 5 parameters
 
 This section of the report details the effectiveness of various methods of conveying different shape properties, using both ``direct encoding'' and basis shape methods.
 
-\subsubsection{Zernike Moments - Direct Encoding}
-\paragraph{Direct Encoding}
+\subsubsection{Hu Invariant Moments --- Basis Shapes}
+As discussed in section \ref{sec:hu}, Hu's Invariant Moments are seven specific central moments, invariant to rotation, scale and translation.
+
+A method of classifying shapes based on their Hu Invariant Moments was developed. By calculating the invariant moments for a set of basis shapes (in this instance, a circle, square, star and triangle), then calculating the invariant moments for our segmented input shape, and finally measuring the euclidian distance between the moment vector for each basis shape and our segmented shape, it is possible to determine the similarity between the input shape and out basis shapes.
+
+%\begin{equation}
+%    \mbox{shape} = min(\sqrt{{(b_{i_1} - s_{i_1})}^2 + \cdots + {(b_{i_7} - s_{i_7})}^2 })
+%\end{equation}
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[h]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Detail/hu-2.png}
+        \caption{Circular Input Image}
+    \end{subfigure}
+    \begin{subfigure}[h]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Detail/hu-1.png}
+        \caption{Circular Segmented Image (using Magic Wand method)}
+    \end{subfigure}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Detail/hu-3.png}
+    \caption{Euclidean Distance between basis and input shape moments}
+\end{figure}
+
+As you can see, in this example, the system works well --- the results correctly state that the shape that is least-different to our input shape is a circle. The experiment was then repeated on some other input shapes:
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[h]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Detail/hu-triangle-2.png}
+        \caption{Input Triangular Image}
+    \end{subfigure}
+    \begin{subfigure}[h]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Detail/hu-triangle-1.png}
+        \caption{Segmented Triangular Image (using Magic Wand method)}
+    \end{subfigure}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Detail/hu-triangle-3.png}
+    \caption{Euclidean Distance between input and basis shape moments}
+\end{figure}
+
+Again, for a triangular shape, the system works well.
+
+There were some cases where in-correct shapes were reported --- however, the system was fundamentally a success. Future work relating to this technique will include an evaluation of the best choice of basis shapes.
+
+\subsubsection{Zernike Moments --- Direct Encoding}
 By assigning a harmonic to each of the Zernike moments, and varying the amplitude of each harmonic according to the moment value, a tone was generated. I then proceeded to pass various shapes into the algorithm, listening to the tone.
 
 \begin{figure}[H]
@@ -314,5 +381,8 @@ By assigning a harmonic to each of the Zernike moments, and varying the amplitud
 
 Although the tone varied with each shape, it was not possible to identify individual shapes using this system --- it was unclear how a change in the amplitude of a particular harmonic corresponded to changes in shape.
 
-\paragraph{Zernike Moments - Basis Shapes}
+\subsubsection{Zernike Moments - Basis Shapes}
+Using the concept of ``basis shapes'' resulted in more usable results. By training the system using a circle, a square, a star, a rectangle, and a triangle, the following results were obtained:
+
+\subsubsection{Elliptic Fourier Transform - Direct Encoding}
 

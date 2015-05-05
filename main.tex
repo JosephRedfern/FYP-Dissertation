@@ -26,13 +26,13 @@ bookmarks=true,bookmarksopenlevel=2]{hyperref}
 
 
 % PDF VIEW
-% \geometry{total={210mm,297mm},
-% left=25mm,right=25mm,%
-% bindingoffset=0mm, top=25mm,bottom=25mm}
+ \geometry{total={210mm,297mm},
+ left=25mm,right=25mm,%
+ bindingoffset=0mm, top=25mm,bottom=25mm}
 % PRINT
-\geometry{total={210mm,297mm},
-left=20mm,right=20mm,
-bindingoffset=10mm, top=25mm,bottom=25mm}
+%\geometry{total={210mm,297mm},
+%left=20mm,right=20mm,
+%bindingoffset=10mm, top=25mm,bottom=25mm}
 
 \OnehalfSpacing
 %\linespread{1.3}
@@ -54,7 +54,8 @@ bindingoffset=10mm, top=25mm,bottom=25mm}
 %\pagestyle{Ruled}
 \pagestyle{plain}
 \makepagestyle{plain}
-\makeevenfoot{plain}{\thepage}{}{}
+%\makeevenfoot{plain}{\thepage}{}{}
+\makeevenfoot{plain}{}{}{\thepage}
 \makeoddfoot{plain}{}{}{\thepage}
 \makeevenhead{plain}{}{}{}
 
@@ -119,9 +120,9 @@ May 2015
 
 \tableofcontents*
 
-\clearpage
+%\clearpage
 
-\lstlistoflistings
+%\lstlistoflistings
 
 \clearpage
 \mainmatter
