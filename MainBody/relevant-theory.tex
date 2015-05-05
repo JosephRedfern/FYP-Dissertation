@@ -114,7 +114,7 @@ The following is an example of the result of K-means clustering with $K = 3$, wi
 \end{figure}
 
 \section{Elliptic Fourier Descriptors}
-Elliptic Fourier Descriptors are the result of performing an \ac{EFT}, and can be used to describe the shape of a contour.
+Elliptic Fourier Descriptors are the result of performing an \ac{EFT}, and can be used to describe the shape of a contour~\cite{kuhl1982elliptic}.
 
 Before computing the EFD of an image, its contour needs to be extracted. This can be be done by segmenting the image (using a technique described in \ref{sec:segment}), then finding the outermost contour of the segment. This can be done using one of many possible contour tracing techniques, such as Moore Neighbourhood Tracing.
 
@@ -122,6 +122,47 @@ Before computing the EFD of an image, its contour needs to be extracted. This ca
 The first step of the Elliptic Fourier Transform is to compute the chain code of the contour.
 
 Chain codes are used to losslesly encode a monochrome image --- they describe the connectivity of a list of points, relative to each point.
+
+The best way to explain the idea is through an example.
+
+For instance, consider the following image:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{Theory/chain-example-noarrow.eps}
+    \caption{Input Image}
+\end{figure}
+
+Each line can be labelled according to the following pattern.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{Theory/chain-direction.eps}
+    \caption{Labbeling scheme}
+\end{figure}
+
+For instance, an arrow moving right would be labelled $3$, an arrow moving down would be labelled 5, etc etc. 
+
+Applying this labelling scheme to the example image results in the following:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{Theory/chain-example.eps}
+    \caption{Labelled Image}
+\end{figure}
+
+So, the input image encoded as a chain code can be expressed as ``33345671718''. 
+
+\subsection{Fourier Transform}
+Once the chain-code of the input has been calculated, the chain code is used to approximate the shape to an ellipse. The accuracy of the approximation will depend on the number of harmonics specified during the transform --- the higher the number of co-efficients specified, the greater the accuracy:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Theory/eft-harmonics.png}
+    \caption{Resulting approximations with increasing co-efficents (clockwise), taken from~\cite{kuhl1982elliptic}}
+\end{figure}
+
+The specific details of the method used to approximate the chain-code to an ellipse (and the subsequent transforms) can be found in ``Elliptic Fourier Features fo a Closed Contour'' by Kuhl~\cite{kuhl1982elliptic}.
 
 \section{Image Moments}
 Formally, the moment of an image can be defined as\cite{liao1996image}:
@@ -167,4 +208,4 @@ As the name name suggests, values resulting from calculating $I_{1..7}$ are inva
 \label{sec:zernike}
 Zernike Moments are not dissimilar to normal image moments, however are calculated differently --- they are based on Complex Zernike Polynomials~\cite{liao1997image}.
 
-Zernike Moments are orthogonal --- that is, each Zernike moment is statically independent from another, meaning there is little redundancy~\cite{amayeh2005accurate}. This means that using Zernike Moments is an efficient way of parameterizing an image.
+Zernike Moments are orthogonal, and defined on a unit disc --- that is, each Zernike moment is statically independent from another, meaning there is little redundancy~\cite{amayeh2005accurate}. This means that using Zernike Moments is an efficient way of parameterizing an image.
