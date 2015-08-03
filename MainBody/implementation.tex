@@ -109,7 +109,7 @@ Although the primary deliverable of the project was not to invent a new image se
 
 It was decided that a depth-sensing camera~\cite{xtion} would be used in order to assist with region extraction. Rather than relying solely on RGB data and difference in colour to extract objects from the video footage, depth data would also be considered. This choice was made, as object-segmentation was desired --- if a white cup was placed on a white table, traditional colour-based segmentation algorithms may struggle to differentiate between the object and the surface on which the object was sitting.
 
-As majority of image segmentation algorithm implementations consider only colour information for segmentation; it was not possible to use an off-the-shelf MATLAB module to complete this task. After reviewing publications on segmentation using both depth and RGB data, a few different approaches were trialled.
+As majority of image segmentation algorithm implementations consider only colour information for segmentation; it was not possible to use an off-the-shelf Matlab module to complete this task. After reviewing publications on segmentation using both depth and RGB data, a few different approaches were trialled.
 
 \subsubsection{Standard Deviation}
 As an initial experiment, I attempted to highlight ``interesting'' subsections of the image. This was accomplished by using a sliding window over the RGB image, calculating the standard deviation of the pixels in the window. The resulting image was then thresholded and used on a mask on the original image,
@@ -322,19 +322,19 @@ A method of classifying shapes based on their Hu Invariant Moments was developed
     \begin{subfigure}[h]{0.4\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Detail/hu-2.png}
-        \caption{Circular Input Image}
+        \caption{Red, green and blue circular Input Image}
     \end{subfigure}
     \begin{subfigure}[h]{0.4\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Detail/hu-1.png}
-        \caption{Circular Segmented Image (using Magic Wand method)}
+        \caption{Segmented Circular Image (using Magic Wand method)}
     \end{subfigure}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Detail/hu-3.png}
-    \caption{Euclidean Distance between basis and input shape moments}
+    \caption{Euclidean Distance between basis and input circular shape moments}
 \end{figure}
 
 As you can see, in this example, the system works well --- the results correctly state that the shape that is least-different to our input shape is a circle. The experiment was then repeated on some other input shapes:
@@ -343,12 +343,12 @@ As you can see, in this example, the system works well --- the results correctly
     \centering
     \begin{subfigure}[h]{0.4\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Detail/hu-triangle-2.png}
-        \caption{Input Triangular Image}
+        \includegraphics[width=\textwidth]{Detail/hu-triangle-1.png}
+        \caption{Red, green and blue triangular input image}
     \end{subfigure}
     \begin{subfigure}[h]{0.4\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Detail/hu-triangle-1.png}
+        \includegraphics[width=\textwidth]{Detail/hu-triangle-2.png}
         \caption{Segmented Triangular Image (using Magic Wand method)}
     \end{subfigure}
 \end{figure}
@@ -356,7 +356,7 @@ As you can see, in this example, the system works well --- the results correctly
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Detail/hu-triangle-3.png}
-    \caption{Euclidean Distance between input and basis shape moments}
+    \caption{Euclidean Distance between basis and input triangular shape moments}
 \end{figure}
 
 Again, for a triangular shape, the system works well.

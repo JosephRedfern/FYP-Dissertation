@@ -36,7 +36,7 @@ As seen later in this report, this project relies on knowing object boundaries t
 This section aims to describe some different methods, along with explanations as to why they are/are not relevant to this project.
 
 \subsection{Histogram Thresholding} 
-Histogram Thresholding is a way of segmenting an image into a binary mask consisting of the background and the foreground. This is acheived by analysing the frequency distribution of image intensity values, and choosing a point on this histogram at which to split the image into two parts.  
+Histogram Thresholding is a way of segmenting an image into a binary mask consisting of the background and the foreground. This is achieved by analysing the frequency distribution of image intensity values, and choosing a point on this histogram at which to split the image into two parts.  
 
 There are several specific implementations, although they can be generalised into the following form:
 \begin{equation}
@@ -45,9 +45,13 @@ f: \left\{{0,1,2,...,255}\right\} \rightarrow [0, 1]
 
 such that
 
-$f(0\cdots T] \rightarrow 0$
+\begin{equation}
+f(0\cdots T] \rightarrow 0
+\end{equation}
 
-$f(T\cdots 255) \rightarrow 1$
+\begin{equation}
+f(T\cdots 255) \rightarrow 1
+\end{equation}
 
 where $T$ is the chosen threshold.
 \subsubsection{Example}
@@ -69,7 +73,7 @@ The histogram of this greyscale image is as follows:
 
 The peaks on the histogram correspond to the dominant grey tones in the image --- dark to light, from left to right.
 
-There are various algorithms to choose the exact point on the histogram at which to threshold, each having their own merit. Automatic, un-assisted thresholding is often considered on of the most difficult tasks in Computer Vision (http://www.math.tau.ac.il/~turkel/notes/otsu.pdf), so unless the environment is well-known, alternative methods of segmentation may be more appropriate.
+There are various algorithms to choose the exact point on the histogram at which to threshold, each having their own merit. Automatic, un-assisted thresholding is often considered on of the most difficult tasks in Computer Vision~\footnote{http://www.math.tau.ac.il/~turkel/notes/otsu.pdf}, so unless the environment is well-known, alternative methods of segmentation may be more appropriate.
 
 \subsection{Flood Fill}
 \label{sec:floodfill}
@@ -123,6 +127,8 @@ The following is an example of the result of K-means clustering with $K = 3$, wi
 
 \section{Elliptic Fourier Descriptors}
 \label{sec:eft}
+Theory detailed in this section of the report is used for shape classification, discussed in section \ref{sec:eftbs}.
+
 Elliptic Fourier Descriptors are the result of performing an \ac{EFT}, and can be used to describe the shape of a contour~\cite{kuhl1982elliptic}.
 
 Before computing the EFD of an image, its contour needs to be extracted. This can be be done by segmenting the image (using a technique described in \ref{sec:segment}), then finding the outermost contour of the segment. This can be done using one of many possible contour tracing techniques, such as Moore Neighbourhood Tracing.
@@ -130,7 +136,7 @@ Before computing the EFD of an image, its contour needs to be extracted. This ca
 \subsection{Chain Code}
 The first step of the Elliptic Fourier Transform is to compute the chain code of the contour.
 
-Chain codes are used to losslesly encode a monochrome image --- they describe the connectivity of a list of points, relative to each point.
+Chain codes are used to losslessy encode a monochrome image --- they describe the connectivity of a list of points, relative to each point.
 
 The best way to explain the idea is through an example.
 
@@ -147,10 +153,10 @@ Each line can be labelled according to the following pattern.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=1]{Theory/chain-direction.eps}
-    \caption{Labbeling scheme}
+    \caption{Labeling scheme}
 \end{figure}
 
-For instance, an arrow moving right would be labelled $3$, an arrow moving down would be labelled 5, etc etc. 
+For instance, an arrow moving right would be labelled $3$, an arrow moving down would be labelled 5, etc. 
 
 Applying this labelling scheme to the example image results in the following:
 
@@ -182,8 +188,7 @@ M_{ij} = \sum_x \sum_y x^i y^j I(x,y)\,\!
 
 That is, the sum of pixel intensities, waited according to the $x$ and $y$ co-ordinates of each pixel co-ordinate raised to parameters $i$ and $j$ respectively.
 
-Certain properties of images can be established by using particular $i$ and $j$ values during moment calculation - for instance for a Binary Image, area can be given by: $M_{00}$, and image centroid can be given by ${x, y} = M_{10}/M_{00}, M_{01}/M_{00}$.
-
+Certain properties of images can be established by using particular $i$ and $j$ values during moment calculation --- for instance for a Binary Image, area can be given by: $M_{00}$, and image centroid can be given by ${x, y} = M_{10}/M_{00}, M_{01}/M_{00}$. In this way, parallels can be drawn between image moments, and the concept of moment used in mechanics. 
 
 \subsection{Hu Invariant Moments}
 \label{sec:hu}
@@ -217,4 +222,10 @@ As the name name suggests, values resulting from calculating $I_{1..7}$ are inva
 \label{sec:zernike}
 Zernike Moments are not dissimilar to normal image moments, however are calculated differently --- they are based on Complex Zernike Polynomials~\cite{liao1997image}.
 
-Zernike Moments are orthogonal, and defined on a unit disc --- that is, each Zernike moment is statically independent from another, meaning there is little redundancy~\cite{amayeh2005accurate}. This means that using Zernike Moments is an efficient way of parameterizing an image.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Theory/zernikepoly.png}
+    \caption{First 15 Zernike Polynomials (source: Wikimedia Commons)}
+\end{figure}
+
+Unlike normal image moments, Zernike Moments are orthogonal, and defined on a unit disc --- that is, each Zernike moment is statically independent from another, meaning there is little redundancy~\cite{amayeh2005accurate}. This means that using Zernike Moments is an efficient way of parameterizing an image.

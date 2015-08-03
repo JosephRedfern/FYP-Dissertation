@@ -7,3 +7,9 @@
 *.bbl
 main-blx.bib
 *.blg
+*.m
+*.tar.gz
+Submission/
+Support/
+*.swp
+*.DS_Store

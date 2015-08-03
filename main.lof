@@ -2,67 +2,69 @@
 \defcounter {refsection}{0}\relax 
 \addvspace {10pt}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1.1}{\ignorespaces A guidehorse (source: Wikimedia Commons)\relax }}{2}{figure.caption.5}
+\contentsline {figure}{\numberline {1.1}{\ignorespaces A guidehorse (source: Wikimedia Commons)\relax }}{2}{figure.caption.6}
 \defcounter {refsection}{0}\relax 
 \addvspace {10pt}
 \defcounter {refsection}{0}\relax 
 \addvspace {10pt}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Spectrogram of $\Delta M_i^{-1} = - \alpha \sum _{n=1}^N D_i \left [ n \right ] \left [ \sum _{j \in C \left [ i \right ]}^{} F_{ji} \left [ n -1 \right ] + Fext_i \left [ n^{-1} \right ] \right ]$\nobreakspace {}\cite {aphex-equation}\relax }}{7}{figure.caption.13}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Spectrogram of $\Delta M_i^{-1} = - \alpha \sum _{n=1}^N D_i \left [ n \right ] \left [ \sum _{j \in C \left [ i \right ]}^{} F_{ji} \left [ n -1 \right ] + Fext_i \left [ n^{-1} \right ] \right ]$\nobreakspace {}\cite {aphex-equation}\relax }}{7}{figure.caption.14}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.2}{\ignorespaces EyeMusic iOS Application\relax }}{8}{figure.caption.16}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces EyeMusic iOS Application\relax }}{8}{figure.caption.17}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Point placement with \ac {VAS}\relax }}{9}{figure.caption.18}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Point placement with \ac {VAS}\relax }}{9}{figure.caption.19}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Basis of HRTF technique\nobreakspace {}\cite {hrtf-diagram}\relax }}{10}{figure.caption.20}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Basis of HRTF technique\nobreakspace {}\cite {hrtf-diagram}\relax }}{10}{figure.caption.21}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Visualisation of point spacing in TheVIBE\relax }}{10}{figure.caption.22}
-\defcounter {refsection}{0}\relax 
-\addvspace {10pt}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.1}{\ignorespaces IR Pattern from Kinect Device\nobreakspace {}\cite {primesense-irstream}\relax }}{13}{figure.caption.28}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Lena\relax }}{14}{figure.caption.32}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Histogram of Lena Image\relax }}{14}{figure.caption.33}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Example of flood-fill\relax }}{15}{figure.caption.35}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Input Image\relax }}{16}{figure.caption.41}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Labbeling scheme\relax }}{17}{figure.caption.42}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.8}{\ignorespaces Labelled Image\relax }}{17}{figure.caption.43}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.9}{\ignorespaces Resulting approximations with increasing co-efficents (clockwise), taken from\nobreakspace {}\cite {kuhl1982elliptic}\relax }}{17}{figure.caption.45}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Visualisation of point spacing in TheVIBE\relax }}{10}{figure.caption.23}
 \defcounter {refsection}{0}\relax 
 \addvspace {10pt}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Input Image\relax }}{22}{figure.caption.59}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces IR Pattern from Kinect Device\nobreakspace {}\cite {primesense-irstream}\relax }}{13}{figure.caption.29}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Standard Deviation Results\relax }}{22}{figure.caption.60}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Lena\relax }}{14}{figure.caption.33}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.4}{\ignorespaces RGB-only K-Means segmentation\relax }}{23}{figure.caption.63}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Histogram of Lena Image\relax }}{14}{figure.caption.34}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.5}{\ignorespaces RGBD K-means segmentation\relax }}{23}{figure.caption.64}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Example of flood-fill\relax }}{15}{figure.caption.36}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.6}{\ignorespaces Segmentation of blurred RGBD image\relax }}{24}{figure.caption.65}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Input Image\relax }}{16}{figure.caption.42}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.7}{\ignorespaces Variable-frequency distance system. The red dot marks the center of the depth map\relax }}{25}{figure.caption.71}
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Labeling scheme\relax }}{17}{figure.caption.43}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.8}{\ignorespaces Extracted object as a binary image\relax }}{26}{figure.caption.77}
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Labelled Image\relax }}{17}{figure.caption.44}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.9}{\ignorespaces Multi-point grid\relax }}{27}{figure.caption.81}
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Resulting approximations with increasing co-efficents (clockwise), taken from\nobreakspace {}\cite {kuhl1982elliptic}\relax }}{17}{figure.caption.46}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.10}{\ignorespaces Main components of detail mode\relax }}{28}{figure.caption.82}
+\contentsline {figure}{\numberline {4.10}{\ignorespaces First 15 Zernike Polynomials (source: Wikimedia Commons)\relax }}{19}{figure.caption.49}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.12}{\ignorespaces Euclidean Distance between basis and input shape moments\relax }}{29}{figure.caption.86}
+\addvspace {10pt}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.14}{\ignorespaces Euclidean Distance between input and basis shape moments\relax }}{30}{figure.caption.88}
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Input Image\relax }}{23}{figure.caption.61}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.16}{\ignorespaces Resulting Tone\relax }}{31}{figure.caption.91}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Standard Deviation Results\relax }}{23}{figure.caption.62}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.17}{\ignorespaces Interpolation between circle and triangle\relax }}{32}{figure.caption.93}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces RGB-only K-Means segmentation\relax }}{24}{figure.caption.65}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.5}{\ignorespaces RGBD K-means segmentation\relax }}{24}{figure.caption.66}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Segmentation of blurred RGBD image\relax }}{25}{figure.caption.67}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Variable-frequency distance system. The red dot marks the center of the depth map\relax }}{26}{figure.caption.73}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Extracted object as a binary image\relax }}{27}{figure.caption.79}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Multi-point grid\relax }}{28}{figure.caption.83}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Main components of detail mode\relax }}{29}{figure.caption.84}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.12}{\ignorespaces Euclidean Distance between basis and input circular shape moments\relax }}{30}{figure.caption.88}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.14}{\ignorespaces Euclidean Distance between basis and input triangular shape moments\relax }}{31}{figure.caption.90}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.16}{\ignorespaces Resulting Tone\relax }}{32}{figure.caption.93}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.17}{\ignorespaces Interpolation between circle and triangle\relax }}{33}{figure.caption.95}
 \defcounter {refsection}{0}\relax 
 \addvspace {10pt}
 \defcounter {refsection}{0}\relax 
